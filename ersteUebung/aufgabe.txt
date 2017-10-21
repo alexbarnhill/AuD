@@ -1,0 +1,16 @@
+Für ideale Gase gilt die thermische Zustandsgleichung p · V = N · kB · T (Druck p, Volumen V ,
+Teilchenzahl N, Boltzmann-Konstante kB, Temperatur T). Die durchschnittliche kinetische Energie
+eines Gas-Teilchens (Masse m, Geschwindigkeit v) berechnet sich zu Ekin =
+1
+2
+· m · v
+2 =
+3
+2
+· kB · T.
+
+
+Laden Sie den Klassenrumpf Physics.java von der Homepage der Übung und ergänzen Sie die
+Methoden an den entsprechend im Kommentar mit „TODO“ markierten Stellen. Als Stoffmenge N
+gehen Sie stets von 1 mol aus, also N := NA, wobei NA die sog. Avogadro-Konstante ist.
+Geben Sie Ihre Lösung als Physics.java über EST ab.
