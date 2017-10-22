@@ -57,6 +57,7 @@ public class Physics {
 	// this method computes and returns the average speed of a particle.
 	// 1/2(m)v^2 = 3/2 (kB) T
 	// v = sqrt(3kB * T / m)
+	// 
 	public static double computeAverageSpeed(double t, double m) {
 		double velocity = Math.sqrt((3 * BOLTZMANN * t) / m);
 		return velocity;
