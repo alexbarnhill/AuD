@@ -33,15 +33,24 @@ public class Physics {
 
 	// Given gas-volume v (m*m*m) and a change in temperature of deltaT (K),
 	// this method computes and returns the change in pressure (Pa).
-	//
+	// dT = T2 -T1
+	// dT(N * kB) / V = dP
 	public static double computeDeltaPisochore(double v, double deltaT) {
-		return 0.0;
+		double deltaP = (deltaT * (AVOGARDO * BOLTZMANN)) / v;
+		return deltaP;
 	}
 
 	// Given gas-volume v (m*m*m), temperature t (K) and a change in volume of deltaV (m*m*m),
 	// this method computes and returns the change in pressure (Pa).
+	// v2 = deltaV + V1
+	// p2 = nRT/(deltaV + V1)
+	// p1 = nRT/V1
+	// deltaP = p2 - p1
 	public static double computeDeltaPisotherm(double v, double t, double deltaV) {
-		return 0.0; // TODO
+		double pressure2 = (AVOGARDO * BOLTZMANN * t) / (deltaV + v);
+		double pressure1 = (AVOGARDO * BOLTZMANN * t) / v;
+
+		return pressure2 - pressure1;
 	}
 
 	// Given temperature t (K) and molar mass of particle m (kg/mol),
@@ -54,7 +63,17 @@ public class Physics {
 	}
 
 	public static void main(String[] args) {
-		double v = computeAverageSpeed(373, 1.9944235e-26);
-		System.out.println(v);
+		// Calculate p1
+		double p1 = computeP(30, 40);
+
+		//Calculate p2
+		double p2 = computeP(60, 40);
+		double dP = p2 - p1;
+
+		double deltaP = computeDeltaPisotherm(30, 40, 30);
+		System.out.println("Compted Delta P = " + deltaP);
+		System.out.println("P2 - P1 = " + dP);
+
+
 	}
 }
