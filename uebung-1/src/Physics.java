@@ -1,7 +1,7 @@
 public class Physics {
 
 	private static double AVOGARDO = 6.0221409e+23;
-
+	
 	// m2 kg s-2 K-1
 	private static double BOLTZMANN = 1.38064852e-23;
 	//
@@ -40,7 +40,8 @@ public class Physics {
 		return deltaP;
 	}
 
-	// Given gas-volume v (m*m*m), temperature t (K) and a change in volume of deltaV (m*m*m),
+	// Given gas-volume v (m*m*m), temperature t (K) and a change in volume of
+	// deltaV (m*m*m),
 	// this method computes and returns the change in pressure (Pa).
 	// v2 = deltaV + V1
 	// p2 = nRT/(deltaV + V1)
@@ -56,24 +57,10 @@ public class Physics {
 	// Given temperature t (K) and molar mass of particle m (kg/mol),
 	// this method computes and returns the average speed of a particle.
 	// 1/2(m)v^2 = 3/2 (kB) T
-	// v = sqrt(3kB * T / m)
+	// v = sqrt(3kB * T / m * N)
 	public static double computeAverageSpeed(double t, double m) {
-		double velocity = Math.sqrt((3 * BOLTZMANN * t) / m);
+		double velocity = Math.sqrt((3 * BOLTZMANN * t) / m * AVOGARDO);
 		return velocity;
 	}
 
-	public static void main(String[] args) {
-		// Calculate p1
-		double p1 = computeP(30, 40);
-
-		//Calculate p2
-		double p2 = computeP(60, 40);
-		double dP = p2 - p1;
-
-		double deltaP = computeDeltaPisotherm(30, 40, 30);
-		System.out.println("Compted Delta P = " + deltaP);
-		System.out.println("P2 - P1 = " + dP);
-
-
-	}
 }
