@@ -57,6 +57,10 @@ public class StatistikPublicTest {
 		assertEquals(33117.0, actual1, 1e-42);
 		double actual3 = Statistik.max7(42.0815, 666.0815, 2017.0815, 666, 0b11111111, .815, 2017.10);
 		assertEquals(2017.10, actual3, 1e-42);
+		double actual4 = Statistik.max7(7, 6, 5, 4, 3, 2, 1);
+		assertEquals(7, actual4, 1e-42);
+		double actual5 = Statistik.max7(14, -3, 12, -8, -9, 7, 5);
+		assertEquals(14, actual5, 1e-42);
 	}
 
 	// ========== PUBLIC TEST: Mittelwert ==========
