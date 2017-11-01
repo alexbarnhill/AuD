@@ -74,8 +74,6 @@ public class Statistik {
 	
 	public static double sort7(double a, double b, double c, double d, double e, double f, double g, String request) {
 		double tmp;
-		System.out.println("Start:");
-		System.out.println("A: " + a + " B: " + b + " C: " + c + " D: " + d + " E: " + e + " F: " + f + " G: " + g);
 		double response = 0.0;
 		for (int i = 0; i <= 6; i++) {
 			if(a > b) {
@@ -114,9 +112,6 @@ public class Statistik {
 				g = tmp;
 			}
 		}
-		
-		System.out.println("End:");
-		System.out.println("A: " + a + " B: " + b + " C: " + c + " D: " + d + " E: " + e + " F: " + f + " G: " + g + " Request: " + request);
 		
 		switch(request) {
 			case("min"):
