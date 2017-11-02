@@ -16,7 +16,7 @@ public class Declarations {
 	public static char[] lowerCaseLetters() {
 		char[] letters = new char[26];
 		int counter = 0;
-		for(char i = 97; i <= (97 + 25); i++) {
+		for (char i = 97; i <= (97 + 25); i++) {
 			letters[counter] = i;
 			counter++;
 		}
@@ -51,12 +51,12 @@ public class Declarations {
 		counter = 0;
 		for (char i = 0; i < 3; i++) {
 			if (i < 2) {
-				for(char j = 48; j <=57; j++) {
+				for (char j = 48; j <=57; j++) {
 					container[3][counter] = j;
 					counter++;
 				}
 			} else {
-				for(char j = 48; j <= 53; j++) {
+				for (char j = 48; j <= 53; j++) {
 					container[3][counter] = j;
 					counter++;
 				}
