@@ -32,13 +32,13 @@ public class Declarations {
 		int counter = 0;
 		for (char j = 65; j <= (90); j++) {
 			System.out.print(j);
-			container[1][counter] = j;
+			container[0][counter] = j;
 			counter++;
 		}
 
 		counter = 0;
 		for (char i = 97; i <= (122); i++) {
-			container[0][counter] = i;
+			container[1][counter] = i;
 			counter++;
 		}
 
