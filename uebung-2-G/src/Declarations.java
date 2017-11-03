@@ -4,8 +4,8 @@ public class Declarations {
 	public static final double AUD_EXAM_GRADES = -10131720232730333740.4347e-50;
 
 	public enum Tutors {
-		athanassios, janina, fabian, anatoliy, eva, oliver, christian, adrian, sara, tom, immanuel, johannes, andreas, yannik,
-		stefan, benedikt, daniel, julius, rebekka
+		Athanassios, Janina, Fabian, Anatoliy, Eva, Oliver, Christian, Adrian, Sara, Tom, Immanuel, Johannes, Andreas, Yannik,
+		Stefan, Benedikt, Daniel, Julius, Rebekka
 	}
 	// TODO: declare an enumeration named "Tutors" containing the first (only the first ONE!)
 	// given names (e.g. "John" from "John Doe") of all 22 tutors of the AuD winter term 2017/18:
