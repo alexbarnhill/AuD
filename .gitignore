@@ -1,5 +1,9 @@
 *.class
 audworkspace
 aud-workspace
+.settings
+.classpath
+.gitignore
+.project
 /.metadata/
 /.recommenders/
