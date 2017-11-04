@@ -1,4 +1,5 @@
 *.class
 audworkspace
+aud-workspace
 /.metadata/
 /.recommenders/
