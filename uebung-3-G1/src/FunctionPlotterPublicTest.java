@@ -17,6 +17,21 @@ public class FunctionPlotterPublicTest {
 			}
 		}
 	}
+	
+	@Test(timeout = 100)
+	public void pubTest_newPlottingArea_30x80() {
+		int width = 30, height = 80;
+		FunctionPlotter.newPlottingArea(width, height);
+		assertNotNull(FunctionPlotter.plottingArea);
+		assertTrue(FunctionPlotter.plottingArea.length == width);
+		for (int i = 0; i < width; i++) {
+			assertNotNull(FunctionPlotter.plottingArea[i]);
+			assertTrue(FunctionPlotter.plottingArea[i].length == height);
+			for (int j = 0; j < height; j++) {
+				assertEquals("array content wrong at (" + i + "," + j + ")", ' ', FunctionPlotter.plottingArea[i][j]);
+			}
+		}
+	}
 
 	// --------------- PUBLIC TESTS ------------------
 	@Test(timeout = 1000)
@@ -134,6 +149,7 @@ public class FunctionPlotterPublicTest {
 		FunctionPlotter.plotFunction(-10, +60, 12, 12);
 		assertAreasSame();
 	}
+
 
 	// ------------------------------------------------------
 	private static char[][] expected = { //

@@ -124,9 +124,8 @@ public class FunctionPlotter {
 	 *            the string to write
 	 */
 	public static void plotString(int x, int y, String s) {
-		char[] array = s.toCharArray();
 		for(int i = 0; i < s.length(); i++) {
-			plottingArea[x+i][y] = array[i];
+			plottingArea[x+i][y] = s.charAt(i);
 		}
 		
 		
@@ -164,7 +163,6 @@ public class FunctionPlotter {
 			fx = functionToPlot(x);
 			plottingArea[xOrigin + x][yOrigin + fx] = '.';
 		}
-		printPlottingArea();
 	}
 
 	/**

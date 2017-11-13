@@ -7,6 +7,11 @@ public class WrittenRecursiveMultiplication {
 	
 	
 	public static WRM_Logger LOGGER;
+	
+	private static long maskHelper(int bits) {
+		long mask = createMask(bits, 1) - 1;
+		return mask;
+	}
 
 	/**
 	 * Method to calculate the number of bits in the binary representation of the given number {@code num}
@@ -24,6 +29,13 @@ public class WrittenRecursiveMultiplication {
 		}
 		return bits;
 	}
+	
+	private static long createMask(int bits, long mask) {
+		if(bits > 0) {
+			return createMask(bits - 1, mask << 1);
+		}
+		return mask;
+	}
 
 	/**
 	 * Method to extract the lower {@code lowerBits} number of bits from the given number {@code num}
@@ -35,8 +47,8 @@ public class WrittenRecursiveMultiplication {
 	 * @return {@code long} representing the lower {@code lowerBits} bits of {@code num}
 	 */
 	public static long extractLowerBits(int lowerBits, long num) {
-		long rep = num << (64 - lowerBits);
-		return rep >> (64 - lowerBits);
+		long mask = maskHelper(lowerBits);
+		return num & mask;
 	}
 
 	/**
@@ -49,7 +61,9 @@ public class WrittenRecursiveMultiplication {
 	 * @return {@code long} representing the upper {@code (n - lowerBits)} bits of {@code num}
 	 */
 	public static long extractHigherBits(int lowerBits, long num) {
-		return 0;
+		int upperBits = countUsedBits(num) - lowerBits;
+		long mask = maskHelper(upperBits) << lowerBits;
+		return (num & mask) >> lowerBits;
 	}
 
 	/**
@@ -65,7 +79,11 @@ public class WrittenRecursiveMultiplication {
 	 *            The number of bits in each segment ({@code up, mid, low}) of the result
 	 */
 	public static long combine(long up, long mid, long low, int bits) {
-		return 0;
+		long result = up << bits;
+		result = result | mid;
+		result = result << bits;
+		result = result | low;
+		return result;
 	}
 
 	/**
@@ -79,7 +97,7 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec4(long x, long y) {
 		LOGGER.log_writtenMulRec4(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		return 0;
+		return x * y;
 	}
 
 	/**
