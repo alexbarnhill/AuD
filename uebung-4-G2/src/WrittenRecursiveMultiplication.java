@@ -4,6 +4,8 @@ public class WrittenRecursiveMultiplication {
 	 * 
 	 * Used to trace your recursive method calls.
 	 */
+	
+	
 	public static WRM_Logger LOGGER;
 
 	/**
@@ -16,7 +18,11 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static int countUsedBits(long num) {
 		LOGGER.log_countUsedBits(num); // DO NOT MODIFY OR REMOVE THIS LINE!
-		// TODO
+		int bits = 1;
+		if(num != 1) {
+			return 1 + countUsedBits(num >> 1);
+		}
+		return bits;
 	}
 
 	/**
@@ -29,7 +35,8 @@ public class WrittenRecursiveMultiplication {
 	 * @return {@code long} representing the lower {@code lowerBits} bits of {@code num}
 	 */
 	public static long extractLowerBits(int lowerBits, long num) {
-		// TODO
+		long rep = num << (64 - lowerBits);
+		return rep >> (64 - lowerBits);
 	}
 
 	/**
@@ -42,7 +49,7 @@ public class WrittenRecursiveMultiplication {
 	 * @return {@code long} representing the upper {@code (n - lowerBits)} bits of {@code num}
 	 */
 	public static long extractHigherBits(int lowerBits, long num) {
-		// TODO
+		return 0;
 	}
 
 	/**
@@ -58,7 +65,7 @@ public class WrittenRecursiveMultiplication {
 	 *            The number of bits in each segment ({@code up, mid, low}) of the result
 	 */
 	public static long combine(long up, long mid, long low, int bits) {
-		// TODO
+		return 0;
 	}
 
 	/**
@@ -72,7 +79,7 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec4(long x, long y) {
 		LOGGER.log_writtenMulRec4(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		// TODO
+		return 0;
 	}
 
 	/**
@@ -86,6 +93,6 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec3(long x, long y) {
 		LOGGER.log_writtenMulRec3(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		// TODO
+		return 0;
 	}
 }
