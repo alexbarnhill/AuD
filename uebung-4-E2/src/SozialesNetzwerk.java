@@ -41,17 +41,6 @@ public class SozialesNetzwerk {
 		return alreadyVisited;
 	}
 	
-	private static void printVisited() {
-		for(int i = 0; i < anzahlNutzer; i++) {
-			System.out.println(i);
-			for (int j = 0; j < anzahlNutzer; j++) {
-				System.out.printf(" %s ", visited[i][j]);
-			}
-			System.out.println();
-			
-		}
-	}
-	
 	private static void resetVisited() {
 		visited = new boolean[anzahlNutzer][anzahlNutzer];
 	}
@@ -61,7 +50,7 @@ public class SozialesNetzwerk {
 	public static void initialisiere(int n) {
 		freundschaft = new boolean[n][n];
 		users = new String[n];
-		visited = new boolean[n][n];
+		resetVisited();
 		
 	}
 
@@ -96,25 +85,17 @@ public class SozialesNetzwerk {
 		return freundschaft[id0][id1];
 		
 	}
-	
-	private static boolean[] getFriends(int id) {
-		boolean[] friends = new boolean[anzahlNutzer];
-		for(int i = 0; i < anzahlNutzer; i++) {
-			if(testeFreundschaft(i, id)) {
-				friends[i] = true;
-			}
-		}
-		return friends;
-	}
 
 	// returns true if the users with the given IDs are reachable within the given distance e, false otherwise
 	public static boolean istErreichbar(SozialesNetzwerkMethodenProtokoll snmp, int id0, int id1, int e) {
 		snmp.istErreichbar(id0, id1, e); // DO NOT REMOVE OR CHANGE THIS LINE!
 		System.out.println("Starting with: id0 = " + id0 + " id1 = " + id1 + " E: " + e);
 		if((testeFreundschaft(id0, id1)) && e > 0) {
+			resetVisited();
 			System.out.println(id0 + " and " + id1 + " are friends. Exiting now with e = " + e);
 			return true;
 		} else if( e <= 0){
+			resetVisited();
 			System.out.println("Too far away");
 			return false;
 		} else {

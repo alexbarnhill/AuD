@@ -97,30 +97,24 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec4(long x, long y) {
 		LOGGER.log_writtenMulRec4(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		long result = 1;
-		if(x == 0 || y == 0) {
+		if(x <= 0 || y <= 0) {
 			return 0;
-		}
-		int bitsX = countUsedBits(x);
-		int lowerCountX = bitsX % 2 == 0 ? bitsX / 2 : (bitsX + 1) / 2;
-		long lowerBitsX = extractLowerBits(lowerCountX, x);
-		int upperCountX = bitsX - lowerCountX;
-		long upperBitsX = extractHigherBits(upperCountX, x);
-		
-		
-		int bitsY = countUsedBits(y);
-		int lowerCountY = bitsY % 2 == 0 ? bitsY / 2 : (bitsY + 1) / 2;
-		long lowerBitsY = extractLowerBits(lowerCountY, y);
-		int upperCountY = bitsY - lowerCountY;
-		long upperBitsY = extractHigherBits(upperCountY, y);
-		
-		System.out.println("X: " + x + " Y: " + y);
-		System.out.println("upper bits X and upper bits Y: " + ((upperBitsY | upperBitsX << bitsY) + (lowerBitsY | lowerBitsX << lowerCountX) ) );
-	
-		long test = (upperBitsY | upperBitsX << bitsY) + (lowerBitsY | lowerBitsX << lowerCountX);
-		System.out.println(test);
-		
-		return test;
+		} else if(x == 1 || y == 1) {
+			return 1;
+		} else {
+			int bitsX = countUsedBits(x);
+			int lowerCountX = bitsX % 2 == 0 ? bitsX / 2 : (bitsX + 1) / 2;
+			long lowerBitsX = extractLowerBits(lowerCountX, x);
+			int upperCountX = bitsX - lowerCountX;
+			long upperBitsX = extractHigherBits(upperCountX, x);
+			
+			int bitsY = countUsedBits(y);
+			int lowerCountY = bitsY % 2 == 0 ? bitsY / 2 : (bitsY + 1) / 2;
+			long lowerBitsY = extractLowerBits(lowerCountY, y);
+			int upperCountY = bitsY - lowerCountY;
+			long upperBitsY = extractHigherBits(upperCountY, y);
+			return (x << upperBitsY & 1) + writtenMulRec4(x >> 1, y >> 1);
+		}	
 	}
 
 	/**
@@ -134,6 +128,23 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec3(long x, long y) {
 		LOGGER.log_writtenMulRec3(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		return 0;
+		if(x <= 0 || y <= 0) {
+			return 0;
+		} else if(x == 1 && y == 1) {
+			return 1;
+		} else {
+			int bitsX = countUsedBits(x);
+			int lowerCountX = bitsX % 2 == 0 ? bitsX / 2 : (bitsX + 1) / 2;
+			long lowerBitsX = extractLowerBits(lowerCountX, x);
+			int upperCountX = bitsX - lowerCountX;
+			long upperBitsX = extractHigherBits(upperCountX, x);
+			
+			int bitsY = countUsedBits(y);
+			int lowerCountY = bitsY % 2 == 0 ? bitsY / 2 : (bitsY + 1) / 2;
+			long lowerBitsY = extractLowerBits(lowerCountY, y);
+			int upperCountY = bitsY - lowerCountY;
+			long upperBitsY = extractHigherBits(upperCountY, y);
+			return ((upperBitsX << upperBitsY) << lowerCountY) - writtenMulRec4(x >> 1, y >> 1);
+		}	
 	}
 }
