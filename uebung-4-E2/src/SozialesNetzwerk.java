@@ -1,5 +1,7 @@
 public class SozialesNetzwerk {
 	public static boolean[][] freundschaft;
+	
+	private static boolean[][] visited;
 
 	public static int anzahlNutzer;
 	
@@ -20,11 +22,38 @@ public class SozialesNetzwerk {
 	private static int nextFriend(int id) {
 		int friend = id;
 		for(int i = 0; i < anzahlNutzer; i++) {
-			if(testeFreundschaft(i, id) && id != i) {
+			if(testeFreundschaft(i, id) && id != i && !alreadyVisited(i, id)) {
+				System.out.println("Next Friend of " + id + " is " + i);
+				visited[i][id] = true;
+				visited[id][i] = true;
 				friend = i;
+				break;
 			}
 		}
 		return friend;
+	}
+	
+	private static boolean alreadyVisited(int id0, int id1) {
+		boolean alreadyVisited = false;
+		if(visited[id0][id1] || visited[id1][id0]) {
+			alreadyVisited = true;
+		}
+		return alreadyVisited;
+	}
+	
+	private static void printVisited() {
+		for(int i = 0; i < anzahlNutzer; i++) {
+			System.out.println(i);
+			for (int j = 0; j < anzahlNutzer; j++) {
+				System.out.printf(" %s ", visited[i][j]);
+			}
+			System.out.println();
+			
+		}
+	}
+	
+	private static void resetVisited() {
+		visited = new boolean[anzahlNutzer][anzahlNutzer];
 	}
 	
 
@@ -32,6 +61,8 @@ public class SozialesNetzwerk {
 	public static void initialisiere(int n) {
 		freundschaft = new boolean[n][n];
 		users = new String[n];
+		visited = new boolean[n][n];
+		
 	}
 
 	// adds a user with the given name
@@ -40,6 +71,7 @@ public class SozialesNetzwerk {
 		users[location] = name;
 		freundschaft[location][location] = true;
 		anzahlNutzer++;
+		resetVisited();
 		return location;
 	}
 
@@ -48,6 +80,7 @@ public class SozialesNetzwerk {
 	public static void fuegeFreundschaftHinzu(int id0, int id1) {
 		freundschaft[id0][id1] = true;
 		freundschaft[id1][id0] = true;
+		resetVisited();
 	}
 
 	// removes a friendship relationship between the users with the given IDs
@@ -55,12 +88,23 @@ public class SozialesNetzwerk {
 	public static void entferneFreundschaft(int id0, int id1) {
 		freundschaft[id0][id1] = false;
 		freundschaft[id1][id0] = false;
+		resetVisited();
 	}
 
 	// returns true if the users with the given IDs are friends and false if not
 	public static boolean testeFreundschaft(int id0, int id1) {
 		return freundschaft[id0][id1];
 		
+	}
+	
+	private static boolean[] getFriends(int id) {
+		boolean[] friends = new boolean[anzahlNutzer];
+		for(int i = 0; i < anzahlNutzer; i++) {
+			if(testeFreundschaft(i, id)) {
+				friends[i] = true;
+			}
+		}
+		return friends;
 	}
 
 	// returns true if the users with the given IDs are reachable within the given distance e, false otherwise
@@ -73,10 +117,13 @@ public class SozialesNetzwerk {
 		} else if( e <= 0){
 			System.out.println("Too far away");
 			return false;
-		} else if (nextFriend(id0) == id0) {
-			return false;
 		} else {
-			return istErreichbar(snmp, nextFriend(id0), id1, e - 1);
+			for(int i = 0; i < anzahlNutzer; i++) {
+				if(testeFreundschaft(id0, i)) {
+					return istErreichbar(snmp, nextFriend(id0), id1, e - 1);
+				}
+			}
+			return false;
 		}
 	}
 }

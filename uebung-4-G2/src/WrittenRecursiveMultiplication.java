@@ -114,12 +114,13 @@ public class WrittenRecursiveMultiplication {
 		int upperCountY = bitsY - lowerCountY;
 		long upperBitsY = extractHigherBits(upperCountY, y);
 		
+		System.out.println("X: " + x + " Y: " + y);
+		System.out.println("upper bits X and upper bits Y: " + ((upperBitsY | upperBitsX << bitsY) + (lowerBitsY | lowerBitsX << lowerCountX) ) );
+	
+		long test = (upperBitsY | upperBitsX << bitsY) + (lowerBitsY | lowerBitsX << lowerCountX);
+		System.out.println(test);
 		
-		System.out.println(" X = " + x + ": total bits = " + bitsX + " lowerBits = " + lowerCountX + " upperBits = " + upperCountX);
-		System.out.println(" X: Lower Bits Representative: " + lowerBitsX + " Upper Bits Representative: " + upperBitsX);
-		System.out.println(" Y = " + y + " : total bits = " + bitsY + " lowerBits = " + lowerCountY + " upperBits = " + upperCountY);
-		System.out.println(" Y: Lower Bits Representative: " + lowerBitsY + " Upper Bits Representative: " + upperBitsY);
-		return result;
+		return test;
 	}
 
 	/**

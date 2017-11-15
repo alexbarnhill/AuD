@@ -61,9 +61,9 @@ public class RucksackPackenPublicTest {
 	@Test(timeout = 666)
 	public void pubTest_normal_2() {
 		int[] groessen = { 2, 1, 2, 2, 2 };
-		int[] werte = { 1, 8, 1, 2, 2 };
+		int[] werte = { -1, -8, -4, -2, -2 };
 		int sackGroesse = 6;
-		int expected = 12;
+		int expected = 0;
 		int stackTraceRekTiefeMaxExpected = groessen.length + 1;
 		RucksackPackenPublicTest.pubTest_check(groessen, werte, sackGroesse, expected, stackTraceRekTiefeMaxExpected);
 	}
