@@ -132,7 +132,7 @@ public class WrittenRecursiveMultiplication {
 			low = writtenMulRec4(lowerBitsX, lowerBitsY);
 			System.out.println("At the end comes: " + lowerBitsX + " * " + lowerBitsY + " = " + low);
 			
-			count = bits;
+			count = upperCount;
 			System.out.println("Combining: " + up + " " + middle + " " + low + " With Bits = " + count);
 			
 			
