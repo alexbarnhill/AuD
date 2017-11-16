@@ -1,18 +1,6 @@
 public class RucksackPacken {
 	
 	private static int worth = 0;
-	
-	private static boolean worthIt(double size, double worth) {
-		boolean worthIt = false;
-		if((worth / size) >= 1) {
-			System.out.println("Item was worth it with a ratio of " + worth/size);
-			worthIt = true;
-		} else {
-			System.out.println("Item was not worth it with a ratio of " + worth/size);
-		}
-			
-		return worthIt;
-	}
 	/**
 	 * @param groessen
 	 *            Die Groessen der einzupackenden Elemente.

@@ -97,24 +97,51 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec4(long x, long y) {
 		LOGGER.log_writtenMulRec4(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
+		long up = 0;
+		long middle = 0;
+		long low = 0;
+		int count = 0;
 		if(x <= 0 || y <= 0) {
 			return 0;
-		} else if(x == 1 || y == 1) {
-			return 1;
-		} else {
-			int bitsX = countUsedBits(x);
-			int lowerCountX = bitsX % 2 == 0 ? bitsX / 2 : (bitsX + 1) / 2;
-			long lowerBitsX = extractLowerBits(lowerCountX, x);
-			int upperCountX = bitsX - lowerCountX;
-			long upperBitsX = extractHigherBits(upperCountX, x);
+		} else if(x == 1) {
+			return y;
+		} else if (y == 1) {
+			return x;
 			
-			int bitsY = countUsedBits(y);
-			int lowerCountY = bitsY % 2 == 0 ? bitsY / 2 : (bitsY + 1) / 2;
-			long lowerBitsY = extractLowerBits(lowerCountY, y);
-			int upperCountY = bitsY - lowerCountY;
-			long upperBitsY = extractHigherBits(upperCountY, y);
-			return (x << upperBitsY & 1) + writtenMulRec4(x >> 1, y >> 1);
-		}	
+		} else {
+			int bits = countUsedBits(x) > countUsedBits(y) ? countUsedBits(x) : countUsedBits(y);
+			
+			int lowerCount = (bits >> 1);
+			int upperCount = bits - lowerCount;
+			System.out.printf("Using %s bits with %s lower bits and %s upper bits\n", bits, lowerCount, upperCount);
+			long lowerBitsX = extractLowerBits(lowerCount, x);
+			System.out.println("Lower Bits on x: " + lowerBitsX);
+			long upperBitsX = extractHigherBits(upperCount, x);
+			System.out.println("Upper Bits on x: " + upperBitsX);
+		
+			long lowerBitsY = extractLowerBits(lowerCount, y);
+			long upperBitsY = extractHigherBits(upperCount, y);
+			
+			
+			up = writtenMulRec4(upperBitsX, upperBitsY);
+			System.out.println("First multiplying " + upperBitsX + " and " + upperBitsY + " = " + up);
+			
+			middle = writtenMulRec4(upperBitsX, lowerBitsY) + writtenMulRec4(lowerBitsX, upperBitsY);
+			System.out.println("(" + upperBitsX + " * " + lowerBitsY + ") + (" + lowerBitsX + " * " + upperBitsY + ") = " + middle);
+			
+			low = writtenMulRec4(lowerBitsX, lowerBitsY);
+			System.out.println("At the end comes: " + lowerBitsX + " * " + lowerBitsY + " = " + low);
+			
+			count = bits;
+			System.out.println("Combining: " + up + " " + middle + " " + low + " With Bits = " + count);
+			
+			
+			
+		}
+		
+		long test = combine(up, middle, low, count);
+		System.out.println("Combined: " + test);
+		return test;
 	}
 
 	/**

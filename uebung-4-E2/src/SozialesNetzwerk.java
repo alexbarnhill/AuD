@@ -23,7 +23,6 @@ public class SozialesNetzwerk {
 		int friend = id;
 		for(int i = 0; i < anzahlNutzer; i++) {
 			if(testeFreundschaft(i, id) && id != i && !alreadyVisited(i, id)) {
-				System.out.println("Next Friend of " + id + " is " + i);
 				visited[i][id] = true;
 				visited[id][i] = true;
 				friend = i;
