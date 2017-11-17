@@ -1,7 +1,9 @@
 import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.*;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WrittenRecursiveMultiplicationPublicTest {
 	// ========== SYSTEM ==========
 	protected static final String EX_countUsedBits = "countUsedBits";

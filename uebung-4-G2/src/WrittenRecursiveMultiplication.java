@@ -63,7 +63,8 @@ public class WrittenRecursiveMultiplication {
 	public static long extractHigherBits(int lowerBits, long num) {
 		int upperBits = countUsedBits(num) - lowerBits;
 		long mask = maskHelper(upperBits) << lowerBits;
-		return (num & mask) >> lowerBits;
+		long maskApplied = ((num & mask) >> lowerBits);
+		return maskApplied;
 	}
 
 	/**
@@ -79,12 +80,9 @@ public class WrittenRecursiveMultiplication {
 	 *            The number of bits in each segment ({@code up, mid, low}) of the result
 	 */
 	public static long combine(long up, long mid, long low, int bits) {
-		long result = up << bits;
-		result = result | mid;
-		result = result << bits;
-		result = result | low;
-		return result;
+		return ((up << bits << bits) + (mid << bits) + (low));
 	}
+	
 
 	/**
 	 * Recursive implementation of the developed integer multiplication using four recursive calls (according to equation (2) in the exercise sheet).
@@ -97,11 +95,8 @@ public class WrittenRecursiveMultiplication {
 	 */
 	public static long writtenMulRec4(long x, long y) {
 		LOGGER.log_writtenMulRec4(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
-		long up = 0;
-		long middle = 0;
-		long low = 0;
-		int count = 0;
-		if(x <= 0 || y <= 0) {
+		
+		if(x == 0 || y == 0) {
 			return 0;
 		} else if(x == 1) {
 			return y;
@@ -109,39 +104,29 @@ public class WrittenRecursiveMultiplication {
 			return x;
 			
 		} else {
+			long up = 0;
+			long middle = 0;
+			long low = 0;
 			int bits = countUsedBits(x) > countUsedBits(y) ? countUsedBits(x) : countUsedBits(y);
-			
-			int lowerCount = (bits >> 1);
-			int upperCount = bits - lowerCount;
-			System.out.printf("Using %s bits with %s lower bits and %s upper bits\n", bits, lowerCount, upperCount);
-			long lowerBitsX = extractLowerBits(lowerCount, x);
-			System.out.println("Lower Bits on x: " + lowerBitsX);
-			long upperBitsX = extractHigherBits(upperCount, x);
-			System.out.println("Upper Bits on x: " + upperBitsX);
+	
+			int lowerCount = bits % 2 == 0 ?(bits >> 1) : (bits >> 1) + 1;
 		
-			long lowerBitsY = extractLowerBits(lowerCount, y);
-			long upperBitsY = extractHigherBits(upperCount, y);
+			long lowerBitsX = extractLowerBits(lowerCount, x);
+			long upperBitsX = extractHigherBits(lowerCount, x);
 			
+			long lowerBitsY = extractLowerBits(lowerCount, y);
+			long upperBitsY = extractHigherBits(lowerCount, y);
 			
 			up = writtenMulRec4(upperBitsX, upperBitsY);
-			System.out.println("First multiplying " + upperBitsX + " and " + upperBitsY + " = " + up);
-			
 			middle = writtenMulRec4(upperBitsX, lowerBitsY) + writtenMulRec4(lowerBitsX, upperBitsY);
-			System.out.println("(" + upperBitsX + " * " + lowerBitsY + ") + (" + lowerBitsX + " * " + upperBitsY + ") = " + middle);
-			
 			low = writtenMulRec4(lowerBitsX, lowerBitsY);
-			System.out.println("At the end comes: " + lowerBitsX + " * " + lowerBitsY + " = " + low);
-			
-			count = upperCount;
-			System.out.println("Combining: " + up + " " + middle + " " + low + " With Bits = " + count);
-			
+			long result = combine(up, middle, low, lowerCount);
+			return result;
 			
 			
 		}
 		
-		long test = combine(up, middle, low, count);
-		System.out.println("Combined: " + test);
-		return test;
+		
 	}
 
 	/**
@@ -157,21 +142,37 @@ public class WrittenRecursiveMultiplication {
 		LOGGER.log_writtenMulRec3(x, y); // DO NOT MODIFY OR REMOVE THIS LINE!
 		if(x <= 0 || y <= 0) {
 			return 0;
-		} else if(x == 1 && y == 1) {
-			return 1;
+		} else if(x == 1) {
+			return y;
+		} else if (y == 1) {
+			return x;
 		} else {
-			int bitsX = countUsedBits(x);
-			int lowerCountX = bitsX % 2 == 0 ? bitsX / 2 : (bitsX + 1) / 2;
-			long lowerBitsX = extractLowerBits(lowerCountX, x);
-			int upperCountX = bitsX - lowerCountX;
-			long upperBitsX = extractHigherBits(upperCountX, x);
+			int bits = countUsedBits(x) > countUsedBits(y) ? countUsedBits(x) : countUsedBits(y);
+	
+			int lowerCount = bits % 2 == 0 ?(bits >> 1) : (bits >> 1) + 1;
+		
+			long lowerBitsX = extractLowerBits(lowerCount, x);
+			long upperBitsX = extractHigherBits(lowerCount, x);
 			
-			int bitsY = countUsedBits(y);
-			int lowerCountY = bitsY % 2 == 0 ? bitsY / 2 : (bitsY + 1) / 2;
-			long lowerBitsY = extractLowerBits(lowerCountY, y);
-			int upperCountY = bitsY - lowerCountY;
-			long upperBitsY = extractHigherBits(upperCountY, y);
-			return ((upperBitsX << upperBitsY) << lowerCountY) - writtenMulRec4(x >> 1, y >> 1);
-		}	
+			long lowerBitsY = extractLowerBits(lowerCount, y);
+			long upperBitsY = extractHigherBits(lowerCount, y);
+			
+			long b = x >> lowerCount;
+	        long a = x - (b << lowerCount);
+	        long d = y >> lowerCount;
+	        long c = y - (d << lowerCount);
+	        
+	        System.out.printf("A: %s B: %s C: %s D: %s\n", a, b, c, d);
+			
+			long ac = writtenMulRec3(a, c);
+			long bd = writtenMulRec3(b, d);
+			long abcd = writtenMulRec3(a + b, c + d);
+			
+			System.out.printf("ac = %s, bd = %s, ab + cd = %s", ac, bd, abcd);
+			long res = ac + ((abcd - ac - bd) << lowerCount) + (bd << (lowerCount << 1));
+			
+			
+			return res;
+		}
 	}
 }
