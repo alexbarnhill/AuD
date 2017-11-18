@@ -148,31 +148,22 @@ public class WrittenRecursiveMultiplication {
 			return x;
 		} else {
 			int bits = countUsedBits(x) > countUsedBits(y) ? countUsedBits(x) : countUsedBits(y);
-	
 			int lowerCount = bits % 2 == 0 ?(bits >> 1) : (bits >> 1) + 1;
 		
 			long lowerBitsX = extractLowerBits(lowerCount, x);
 			long upperBitsX = extractHigherBits(lowerCount, x);
-			
+	
 			long lowerBitsY = extractLowerBits(lowerCount, y);
 			long upperBitsY = extractHigherBits(lowerCount, y);
 			
-			long b = x >> lowerCount;
-	        long a = x - (b << lowerCount);
-	        long d = y >> lowerCount;
-	        long c = y - (d << lowerCount);
-	        
-	        System.out.printf("A: %s B: %s C: %s D: %s\n", a, b, c, d);
-			
-			long ac = writtenMulRec3(a, c);
-			long bd = writtenMulRec3(b, d);
-			long abcd = writtenMulRec3(a + b, c + d);
-			
-			System.out.printf("ac = %s, bd = %s, ab + cd = %s", ac, bd, abcd);
-			long res = ac + ((abcd - ac - bd) << lowerCount) + (bd << (lowerCount << 1));
+			long ac = writtenMulRec3(upperBitsX, upperBitsY);
+			long abcd = writtenMulRec3(upperBitsX + lowerBitsX, lowerBitsY + upperBitsY);
+			long bd = writtenMulRec3(lowerBitsX, lowerBitsY);
+			long mid = ((abcd - ac - bd));
+			long test = combine(ac, mid, bd, lowerCount);
 			
 			
-			return res;
+			return test;
 		}
 	}
 }
