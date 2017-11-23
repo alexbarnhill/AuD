@@ -63,9 +63,11 @@ public class GenericFib {
 			b, int c, int n) {
 		if(n == 0) {
 			return 0;
-		} else if (n == 1 || n == 2) {
+		} else if (n == 1) {
 			return 1;
-		} 
+		} else if (n < c) {
+			return n;
+		}
 		return fibDvEHelper(gfk, a, b, c, n, 0, Double.NaN, Double.NaN, Double.NaN);
 	}
 	
@@ -74,16 +76,6 @@ public class GenericFib {
 		gfk.fibDvELog(gfk, a, b, c, n, i, mem1, mem2, mem3);
 		double newMem1 = 0;
 		double cN = 0;
-		if(i == 0) {
-			return 0;
-		}
-		if(i == 1) {
-			mem1 = 0;
-		}
-		if(i == 2) {
-			mem1 = 1;
-			mem2 = 0;
-		}
 		if(c == 1) {
 			cN = mem1;
 		} else if (c == 2) {
@@ -91,26 +83,29 @@ public class GenericFib {
 		} else if (c == 3){
 			cN = mem3;
 		}
+		
 		if(i == n) {
-			if(i % 2 == 0) {
-				return a * (double) mem1 + (double) cN;
+			if (n % 2 == 0) {
+				return (a * mem1) + cN;
 			} else {
-				return b * (double) mem1 + (double) cN;
+				return (b * mem1) + cN;
 			}
-		} else {
-			if(i % 2 == 0) {
-				if (Double.isNaN(cN)) {
-					cN = 0;
-				}
-				newMem1 =  a * mem1 + cN;
-			} else {
-				if(Double.isNaN(cN)) {
-					cN = 0;
-				}
-				newMem1 =  b * mem1 + cN;
-			}
-			return fibDvEHelper(gfk, a, b, c, n, i + 1, newMem1, mem1, mem2);
 		}
+		
+		if(i == 0) {
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, 0, 0, 0);
+		} else if(i == 1) {
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, 1, 0, 0);
+		} else {
+			if (i % 2 == 0) {
+				newMem1 = (a * mem1) + cN;
+				return fibDvEHelper(gfk, a, b, c, n, i + 1, newMem1, mem1, mem2);
+			} else {
+				newMem1 = (b * mem1) + cN;
+				return fibDvEHelper(gfk, a, b, c, n, i + 1, newMem1, mem1, mem2);
+			}
+		}
+		
 
 		
 	}
