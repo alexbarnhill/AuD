@@ -61,13 +61,57 @@ public class GenericFib {
 	
 	public static double fibDvE(GenericFibKontrolle gfk, double a, double
 			b, int c, int n) {
-		
-		return 0;
+		if(n == 0) {
+			return 0;
+		} else if (n == 1 || n == 2) {
+			return 1;
+		} 
+		return fibDvEHelper(gfk, a, b, c, n, 0, Double.NaN, Double.NaN, Double.NaN);
 	}
 	
 	public static double fibDvEHelper (GenericFibKontrolle gfk, double a, double
 			b, int c, int n, int i, double mem1, double mem2, double mem3) {
+		gfk.fibDvELog(gfk, a, b, c, n, i, mem1, mem2, mem3);
+		double newMem1 = 0;
+		double cN = 0;
+		if(i == 0) {
+			return 0;
+		}
+		if(i == 1) {
+			mem1 = 0;
+		}
+		if(i == 2) {
+			mem1 = 1;
+			mem2 = 0;
+		}
+		if(c == 1) {
+			cN = mem1;
+		} else if (c == 2) {
+			cN = mem2;
+		} else if (c == 3){
+			cN = mem3;
+		}
+		if(i == n) {
+			if(i % 2 == 0) {
+				return a * (double) mem1 + (double) cN;
+			} else {
+				return b * (double) mem1 + (double) cN;
+			}
+		} else {
+			if(i % 2 == 0) {
+				if (Double.isNaN(cN)) {
+					cN = 0;
+				}
+				newMem1 =  a * mem1 + cN;
+			} else {
+				if(Double.isNaN(cN)) {
+					cN = 0;
+				}
+				newMem1 =  b * mem1 + cN;
+			}
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, newMem1, mem1, mem2);
+		}
+
 		
-		return 0;
 	}
 }
