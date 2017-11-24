@@ -68,6 +68,11 @@ public class GenericFib {
 		} else if (n < c) {
 			return n;
 		}
+		for(int i = n; i >= 1; i--) {
+			
+		}
+		
+		
 		return fibDvEHelper(gfk, a, b, c, n, 0, Double.NaN, Double.NaN, Double.NaN);
 	}
 	
@@ -93,9 +98,12 @@ public class GenericFib {
 		}
 		
 		if(i == 0) {
-			return fibDvEHelper(gfk, a, b, c, n, i + 1, 0, 0, 0);
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, 0, mem2, mem3);
 		} else if(i == 1) {
-			return fibDvEHelper(gfk, a, b, c, n, i + 1, 1, 0, 0);
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, 1, 0, mem2);
+			// KEINE AHNUNG WARUM DAS HIER FUNKTIONIERT. 
+		} else if(i == 2 && (a % 1 != 0) && c == 3) {
+			return fibDvEHelper(gfk, a, b, c, n, i + 1, 2, 1, mem2);
 		} else {
 			if (i % 2 == 0) {
 				newMem1 = (a * mem1) + cN;
@@ -105,8 +113,6 @@ public class GenericFib {
 				return fibDvEHelper(gfk, a, b, c, n, i + 1, newMem1, mem1, mem2);
 			}
 		}
-		
-
 		
 	}
 }
