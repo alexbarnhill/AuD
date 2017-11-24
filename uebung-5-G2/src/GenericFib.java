@@ -102,7 +102,7 @@ public class GenericFib {
 		} else if(i == 1) {
 			return fibDvEHelper(gfk, a, b, c, n, i + 1, 1, 0, mem2);
 			// KEINE AHNUNG WARUM DAS HIER FUNKTIONIERT. 
-		} else if(i == 2 && (a % 1 != 0) && c == 3) {
+		} else if(i == 2 && (a % 1 != 0) && (b % 1 != 0) && c == 3) {
 			return fibDvEHelper(gfk, a, b, c, n, i + 1, 2, 1, mem2);
 		} else {
 			if (i % 2 == 0) {
