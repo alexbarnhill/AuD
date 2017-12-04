@@ -32,40 +32,38 @@ public class Matrix3x3 {
 		return this;
 	}
 	
-	public void setRotX(double angle) {
-		this.set(0, 0, 1);
-		this.set(1, 0, 0);
-		this.set(2, 0, 0);
-		this.set(0, 1, 0);
-		this.set(1, 1, Math.cos(angle));
-		this.set(2, 1, Math.sin(angle));
-		this.set(0, 2, 0);
-		this.set(1, 2, Math.sin(angle) * -1);
-		this.set(2, 2, Math.cos(angle));
+	public  void setRotX( double winkel) {
+		toIdentity();
+		set (1, 1, Math.cos(winkel));
+		set (2, 1, Math.sin(winkel));
+		set (1, 2, Math.sin(-winkel));
+		set (2, 2, Math.cos(winkel));
+		
+		
+		
 	}
 	
-	public void setRotY(double angle) {
-		this.set(0, 0, Math.cos(angle));
-		this.set(1, 0, 0);
-		this.set(2, 0, Math.sin(angle) * -1);
-		this.set(0, 1, 0);
-		this.set(1, 1, 1);
-		this.set(2, 1, 0);
-		this.set(0, 2, 0);
-		this.set(1, 2, Math.sin(angle));
-		this.set(2, 2, Math.cos(angle));
+	
+	public  void setRotY(double winkel) {
+		toIdentity();
+		set (0, 0, Math.cos(winkel));
+		set (2, 0, Math.sin(-winkel));
+		set (0, 2, Math.sin(winkel));
+		set (2, 2, Math.cos(winkel));
+		
+		
+		
+		
 	}
-
-	public void setRotZ(double angle) {
-		this.set(0, 0, Math.cos(angle));
-		this.set(1, 0, Math.sin(angle));
-		this.set(2, 0, 0);
-		this.set(0, 1, Math.sin(angle) * -1);
-		this.set(1, 1, Math.cos(angle));
-		this.set(2, 1, 0);
-		this.set(0, 2, 0);
-		this.set(1, 2, 0);
-		this.set(2, 2, 1);
+	
+	public  void setRotZ(double winkel) {
+		toIdentity();
+		set (0, 0, Math.cos(winkel));
+		set (1, 0, Math.sin(winkel));
+		set (0, 1, Math.sin(-winkel));
+		set (1, 1, Math.cos(winkel));
+		
+		
 	}
 	
 	public Matrix3x3 immutMul(Matrix3x3 b) {

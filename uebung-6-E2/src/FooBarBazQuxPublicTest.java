@@ -43,8 +43,15 @@ public class FooBarBazQuxPublicTest {
 		long actual = fbbq2.getCallsTo("foo");
 		assertEquals(2, actual);
 		assertEquals(1, fbbq1.getCallsTo("foo"));
+		assertEquals(1, fbbq1.getCallsTo("FOO"));
+		assertEquals(-1, fbbq1.getCallsTo("FOO2"));
 		assertEquals(0, fbbq2.getCallsTo("qux"));
 		assertEquals(-1, fbbq1.getCallsTo("AuD"));
+	}
+	
+	@Test(timeout = 666)
+	public void pubTestFalseValues() {
+		assertEquals("1I love AuD!2", fbbq2.qux("1", "2"));
 	}
 
 	// ========== getTotalCallsTo ==========

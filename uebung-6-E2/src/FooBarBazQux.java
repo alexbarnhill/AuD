@@ -1,5 +1,3 @@
-import java.lang.reflect.Method;
-
 public class FooBarBazQux {
 	public static char BAR = '\uBABE';
 	private String qux = "AuD";
@@ -12,9 +10,25 @@ public class FooBarBazQux {
 	private long quxCalls = 0;
 	private static long staticQux = 0;
 	
-	private long getMethodCalls(String methodName) {
-		long calls = 0;
-		switch(methodName) {
+	
+	public FooBarBazQux() {
+		FooBarBazQux.instantiations++;
+	}
+	
+	public FooBarBazQux(String qux) {
+		FooBarBazQux.instantiations++;
+		this.qux = qux;
+	}
+	
+	
+	
+	public static long getInstantiations() {
+		return instantiations;
+	}
+	
+	public long getCallsTo(String methodName) {
+		long calls = -1;
+		switch(methodName.toLowerCase()) {
 			case "foo":
 				calls = this.fooCalls;
 				break;
@@ -30,31 +44,6 @@ public class FooBarBazQux {
 			default:
 				calls = -1;
 				break;
-		}
-		return calls;
-	}
-	public FooBarBazQux() {
-		FooBarBazQux.instantiations++;
-	}
-	
-	public FooBarBazQux(String qux) {
-		FooBarBazQux.instantiations++;
-		this.qux = qux;
-	}
-	
-	public static long getInstantiations() {
-		return instantiations;
-	}
-	
-	public long getCallsTo(String methodName) {
-		long calls = -1;
-		Method[] methods = this.getClass().getMethods();
-		
-		for(int i = 0; i < methods.length; i++) {
-			
-			if(methods[i].getName().equals(methodName)) {
-				calls = getMethodCalls(methodName);
-			}
 		}
 		
 		return calls;
@@ -84,7 +73,7 @@ public class FooBarBazQux {
 
 	public static long getTotalCallsTo(String methodName) {
 		long calls = -1;
-		switch(methodName) {
+		switch(methodName.toLowerCase()) {
 			case "foo":
 				calls = FooBarBazQux.staticFoo;
 				break;
