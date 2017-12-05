@@ -89,7 +89,7 @@ public class FormenMainTestGUI extends JPanel implements PixelPainter {
 				if (ref[i].charAt(j) == 'b' && colors[i][j] != Color.BLUE)
 					System.out.println("Error: Expeting blue pixel at (" + j + "," + i + ")");
 				if (ref[i].charAt(j) == 'g' && colors[i][j] != Color.GREEN)
-//					System.out.println("Error: Expeting green pixel at (" + j + "," + i + ")");
+					System.out.println("Error: Expeting green pixel at (" + j + "," + i + ")");
 				if (ref[i].charAt(j) == 'y' && colors[i][j] != Color.YELLOW)
 					System.out.println("Error: Expeting yellow pixel at (" + j + "," + i + ")");
 				if (ref[i].charAt(j) == 'w' && colors[i][j] != Color.WHITE)

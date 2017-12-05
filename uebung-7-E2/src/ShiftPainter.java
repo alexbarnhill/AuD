@@ -4,14 +4,15 @@ public class ShiftPainter implements PixelPainter{
 	private Color colors[][];
 	
 	public ShiftPainter(int dx, int dy, PixelPainter painter) {
-		this.dx = painter.getMinX() + dx;
-		this.dy = painter.getMinY() + dy;
+		this.dx = dx;
+		this.dy = dy;
+		colors = new Color[painter.getMaxX() + dx][painter.getMaxY() + dy];
+		
 	}
 	
 	@Override
 	public void set(int x, int y, Color color) {
-		// TODO Auto-generated method stub
-		
+		colors[x + dx][y + dy] = color;
 	}
 
 	@Override

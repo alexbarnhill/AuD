@@ -15,7 +15,7 @@ public class Circle extends OrigCircle {
 	}
 	
 	public void setPainter(int dx, int dy, PixelPainter painter) {
-		this.painter = new ShiftPainter(dx, dy, painter);
+		this.painter = new ShiftPainter(this.x + dx, this.y + dy, painter);
 	}
 	
 	@Override
@@ -31,6 +31,7 @@ public class Circle extends OrigCircle {
 
 	@Override
 	public void draw() {
-		
+		super.setPainter(this.getPainter());
+		super.draw();
 	}
 }

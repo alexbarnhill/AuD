@@ -21,13 +21,14 @@ public class HLine implements Drawable{
 
 	
 	public PixelPainter getPainter() {
-		return painter;
+		return this.painter;
 	}
 
 	public void draw() {
 		PixelPainter painter = this.getPainter();
 		for(int i = x0; i <= x1; i++) {
 			painter.set(i, this.y, this.color);
+			
 		}
 		
 	}

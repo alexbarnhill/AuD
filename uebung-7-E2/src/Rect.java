@@ -28,8 +28,10 @@ public class Rect implements Drawable{
 	@Override
 	public void draw() {
 		PixelPainter painter = this.getPainter();
-		for(int i = this.x; i < this.width; i++) {
-			for(int j = this.y; j < this.height; j++) {
+		for(int i = this.x; i < this.x + this.width; i++) {
+			
+			for(int j = this.y; j < this.y + this.height; j++) {	
+				
 				painter.set(i, j, this.color);
 			}
 		}
