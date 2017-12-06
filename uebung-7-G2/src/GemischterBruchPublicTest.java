@@ -213,7 +213,7 @@ public class GemischterBruchPublicTest {
 	}
 
 	// -------------------- add / sub --------------------
-	@Test(timeout = 666)
+	@Test
 	public void pubTest__addiereZu() {
 		AbstrakterGemischterBruch[][] inOut = { //
 				{ new GemischterBruch(2, 3, 5), new GemischterBruch(7, 1, 10) }, //
@@ -239,9 +239,43 @@ public class GemischterBruchPublicTest {
 			assertEquals(b1 + "+" + b2 + "=?=" + b1_add_b2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", expected[i][1], b1_add_b2.holeZaehler());
 			assertEquals(b1 + "+" + b2 + "=?=" + b1_add_b2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", expected[i][2], b1_add_b2.holeNenner());
 		}
+		
+		GemischterBruch b3 = new GemischterBruch(-1, 4, 5);
+		GemischterBruch b4 = new GemischterBruch(1, 4, 5);
+		GemischterBruch r1 = b3.addiereZu(b4);
+		assertEquals(b3 + "+" + b4 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", true, r1.istPositiv());
+		assertEquals(b3 + "+" + b4 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 0, r1.holeGanzzahligerAnteil());
+		assertEquals(b3 + "+" + b4 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 0, r1.holeZaehler());
+		assertEquals(b3 + "+" + b4 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 1, r1.holeNenner());
+
+		GemischterBruch b5 = new GemischterBruch(-1, 4, 5);
+		GemischterBruch b6 = new GemischterBruch(5, 4, 5);
+		GemischterBruch r2 = b5.addiereZu(b6);
+		assertEquals(b5 + "+" + b6 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", true, r2.istPositiv());
+		assertEquals(b5 + "+" + b6 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 4, r2.holeGanzzahligerAnteil());
+		assertEquals(b5 + "+" + b6 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 0, r2.holeZaehler());
+		assertEquals(b5 + "+" + b6 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 1, r2.holeNenner());
+		
+		GemischterBruch b7 = new GemischterBruch(-1, 4, 5);
+		GemischterBruch b8 = new GemischterBruch(-5, 4, 5);
+		GemischterBruch r3 = b7.addiereZu(b8);
+		assertEquals(b7 + "+" + b8 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", false, r3.istPositiv());
+		assertEquals(b7 + "+" + b8 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 7, r3.holeGanzzahligerAnteil());
+		assertEquals(b7 + "+" + b8 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 3, r3.holeZaehler());
+		assertEquals(b7 + "+" + b8 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r3.holeNenner());
+		
+		GemischterBruch b9 = new GemischterBruch(-3, 3, 5);
+		GemischterBruch b10 = new GemischterBruch(5, 4, 5);
+		GemischterBruch r4 = b9.addiereZu(b10);
+		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", true, r4.istPositiv());
+		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 2, r4.holeGanzzahligerAnteil());
+		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 1, r4.holeZaehler());
+		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r4.holeNenner());
+		
+
 	}
 
-	@Test(timeout = 666)
+	@Test
 	public void pubTest__subtrahiereDavon() {
 		AbstrakterGemischterBruch[][] inOut = { //
 				{ new GemischterBruch(2, 3, 5), new GemischterBruch(7, 1, 10) }, //
@@ -267,6 +301,33 @@ public class GemischterBruchPublicTest {
 			assertEquals(b1 + "-" + b2 + "=?=" + b1_sub_b2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", expected[i][1], b1_sub_b2.holeZaehler());
 			assertEquals(b1 + "-" + b2 + "=?=" + b1_sub_b2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", expected[i][2], b1_sub_b2.holeNenner());
 		}
+		
+		GemischterBruch b1 = new GemischterBruch(-5, 1, 5);
+		GemischterBruch b2 = new GemischterBruch(-5, 1, 5);
+		GemischterBruch r1 = b1.subtrahiereDavon(b2);
+		assertEquals(b1 + "-" + b2 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", true, r1.istPositiv());
+		assertEquals(b1 + "-" + b2 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 0, r1.holeGanzzahligerAnteil());
+		assertEquals(b1 + "-" + b2 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 0, r1.holeZaehler());
+		assertEquals(b1 + "-" + b2 + "=?=" + r1 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 1, r1.holeNenner());
+
+		GemischterBruch b3 = new GemischterBruch(-5, 1, 5);
+		GemischterBruch b4 = new GemischterBruch(-6, 2, 5);
+		GemischterBruch r2 = b3.subtrahiereDavon(b4);
+		assertEquals(b3 + "-" + b4 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", true, r2.istPositiv());
+		assertEquals(b3 + "-" + b4 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 1, r2.holeGanzzahligerAnteil());
+		assertEquals(b3 + "-" + b4 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 1, r2.holeZaehler());
+		assertEquals(b3 + "-" + b4 + "=?=" + r2 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r2.holeNenner());
+
+		GemischterBruch b5 = new GemischterBruch(-5, 1, 5);
+		GemischterBruch b6 = new GemischterBruch(6, 2, 5);
+		GemischterBruch r3 = b5.subtrahiereDavon(b6);
+		assertEquals(b5 + "-" + b6 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", false, r3.istPositiv());
+		assertEquals(b5 + "-" + b6 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 11, r3.holeGanzzahligerAnteil());
+		assertEquals(b5 + "-" + b6 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 3, r3.holeZaehler());
+		assertEquals(b5 + "-" + b6 + "=?=" + r3 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r3.holeNenner());
+
+		
+		
 	}
 
 	// -------------------- compareTo --------------------

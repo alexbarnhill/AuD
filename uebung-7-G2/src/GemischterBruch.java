@@ -92,15 +92,21 @@ public class GemischterBruch extends AbstrakterGemischterBruch {
 
 	@Override
 	public GemischterBruch addiereZu(AbstrakterGemischterBruch andere) {
-		if(this.istPositiv() && andere.istPositiv()) {
-			GemischterBruch first = new GemischterBruch(((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner(), super.holeNenner() * andere.holeNenner());
-			GemischterBruch second = new GemischterBruch(((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner(), andere.holeNenner() * super.holeNenner());
+		if((this.istPositiv() && andere.istPositiv() ) || (!this.istPositiv() && !andere.istPositiv())) {
+			int sign = (this.istPositiv() && andere.istPositiv()) ? 1 : -1;
+			GemischterBruch first = new GemischterBruch((((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner() * sign), super.holeNenner() * andere.holeNenner());
+			GemischterBruch second = new GemischterBruch((((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner() * sign), andere.holeNenner() * super.holeNenner());
 			
-			GemischterBruch result = new GemischterBruch(first.holeZaehler() + second.holeZaehler(), first.holeNenner()).vereinfache();
+			GemischterBruch result = new GemischterBruch((first.holeZaehler() + second.holeZaehler()) * sign, first.holeNenner()).vereinfache();
 			return result;
 		} else if(this.istPositiv() && !andere.istPositiv()) {
 			GemischterBruch newOther = new GemischterBruch(+andere.holeGanzzahligerAnteil(), +andere.holeZaehler(), +andere.holeNenner());
 			return this.subtrahiereDavon(newOther);
+		} else if(!this.istPositiv() && andere.istPositiv()) {
+			GemischterBruch newOrig = new GemischterBruch(this.holeGanzzahligerAnteil(), this.holeZaehler(), this.holeNenner());
+			GemischterBruch newOther = new GemischterBruch(andere.holeGanzzahligerAnteil(), andere.holeZaehler(), andere.holeNenner());
+			return newOther.subtrahiereDavon(newOrig);
+
 		}
 		
 		return new GemischterBruch(0, 0, 0);
@@ -109,19 +115,29 @@ public class GemischterBruch extends AbstrakterGemischterBruch {
 
 	@Override
 	public GemischterBruch subtrahiereDavon(AbstrakterGemischterBruch andere) {
-		
-		// if x > 0 and y > 0 -- OK to do normal subtraction
-		if(super.istPositiv() && andere.istPositiv()) {
-		
-			GemischterBruch first = new GemischterBruch(((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner(), super.holeNenner() * andere.holeNenner());
-			GemischterBruch second = new GemischterBruch(((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner(), andere.holeNenner() * super.holeNenner());
-			
-			GemischterBruch result = new GemischterBruch(first.holeZaehler() - second.holeZaehler(), first.holeNenner()).vereinfache();
+
+		if(( andere.istPositiv() ) ) {
+			GemischterBruch result;
+			int sign1 = (this.istPositiv()) ? 1 : -1;
+			int sign2 = (andere.istPositiv()) ? 1 : -1;
+			GemischterBruch first = new GemischterBruch(( ( (super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner()) * sign1, super.holeNenner() * andere.holeNenner());
+			GemischterBruch second = new GemischterBruch(( ( (andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner()) * sign2, andere.holeNenner() * super.holeNenner());
+			if(!this.istPositiv()) {
+				result = new GemischterBruch(((first.holeZaehler() + second.holeZaehler()) * -1), first.holeNenner()).vereinfache();
+			} else {
+				result = new GemischterBruch((first.holeZaehler() - second.holeZaehler() * 1), first.holeNenner()).vereinfache();
+
+			}
+			if (result.holeGanzzahligerAnteil() == 0 && result.holeZaehler() == 0) {
+				return new GemischterBruch(0, 0, 1);
+			}
 			return result;
-			// else if x > 0 and y < 0 --- This is then normal addition
-		} else if(this.istPositiv() && !andere.istPositiv()) {
+
+		} else if(!andere.istPositiv()) {
 			GemischterBruch newOther = new GemischterBruch(+andere.holeGanzzahligerAnteil(), +andere.holeZaehler(), +andere.holeNenner());
 			return this.addiereZu(newOther);
+		} else {
+			
 		}
 		
 		return new GemischterBruch(0, 0, 0);
