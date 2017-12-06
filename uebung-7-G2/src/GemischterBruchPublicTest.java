@@ -284,6 +284,28 @@ public class GemischterBruchPublicTest {
 			int b2_comp_b1 = b2.compareTo(b1);
 			assertEquals(b2 + "." + GemischterBruchPublicTest.METHOD_NAME_compareTo + "(" + b1 + ")" + " failed.", 1, b2_comp_b1);
 		}
+		
+		AbstrakterGemischterBruch b1 = new GemischterBruch(1, 2, 3);
+		AbstrakterGemischterBruch b2 = new GemischterBruch(1, 1, 3);
+		int result = b1.compareTo(b2);
+		assertEquals(b1 + "." + GemischterBruchPublicTest.METHOD_NAME_compareTo + "(" + b2 + ")" + " failed.", 1, result);
+		
+		AbstrakterGemischterBruch b3 = new GemischterBruch(1581728, 182948492, 1181991991);
+		AbstrakterGemischterBruch b4 = new GemischterBruch(1581728, 182948491, 1181991991);
+		int result2 = b3.compareTo(b4);
+		assertEquals(b3 + "." + GemischterBruchPublicTest.METHOD_NAME_compareTo + "(" + b4 + ")" + " failed.", 1, result2);
+		
+		AbstrakterGemischterBruch b5 = new GemischterBruch(1581721, 182948492, 1181991991);
+		AbstrakterGemischterBruch b6 = new GemischterBruch(1581728, 182948491, 1181991991);
+		int result3 = b5.compareTo(b6);
+		assertEquals(b5 + "." + GemischterBruchPublicTest.METHOD_NAME_compareTo + "(" + b6 + ")" + " failed.", -1, result3);
+		
+		AbstrakterGemischterBruch b7 = new GemischterBruch(1581722, 1829484929, 1181991991);
+		AbstrakterGemischterBruch b8 = new GemischterBruch(1581722, 182948491, 1181991991);
+		int result4 = b7.compareTo(b8);
+		assertEquals(b7 + "." + GemischterBruchPublicTest.METHOD_NAME_compareTo + "(" + b8 + ")" + " failed.", 1, result4);
+		
+		
 	}
 
 	// ========== main ==========
