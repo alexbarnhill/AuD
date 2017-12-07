@@ -272,6 +272,14 @@ public class GemischterBruchPublicTest {
 		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 1, r4.holeZaehler());
 		assertEquals(b9 + "+" + b10 + "=?=" + r4 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r4.holeNenner());
 		
+		GemischterBruch b11= new GemischterBruch(3, 3, 5);
+		GemischterBruch b12 = new GemischterBruch(-5, 4, 5);
+		GemischterBruch r5 = b11.addiereZu(b12);
+		assertEquals(b11 + "+" + b12 + "=?=" + r5 + " @ " + GemischterBruchPublicTest.METHOD_NAME_istPositiv + " failed.", false, r5.istPositiv());
+		assertEquals(b11 + "+" + b12 + "=?=" + r5 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeGanzzahligerAnteil + " failed.", 2, r5.holeGanzzahligerAnteil());
+		assertEquals(b11 + "+" + b12 + "=?=" + r5 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeZaehler + " failed.", 1, r5.holeZaehler());
+		assertEquals(b11 + "+" + b12 + "=?=" + r5 + " @ " + GemischterBruchPublicTest.METHOD_NAME_holeNenner + " failed.", 5, r5.holeNenner());
+		
 
 	}
 
