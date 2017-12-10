@@ -27,7 +27,7 @@ public class SchiffVersenkenMain {
 		if (sv.positioniereSchiff(xPos, yPos, schiffLaenge, senkrecht)) {
 			int ergebnis;
 			do {
-				sv.feldAusgeben(false);
+				sv.feldAusgeben(true);
 				System.out.print("Schuss-Koordinaten: ");
 				int xKoord = INPUT.next().toUpperCase().charAt(0) - 'A';
 				int yKoord = INPUT.nextInt() - 1;
