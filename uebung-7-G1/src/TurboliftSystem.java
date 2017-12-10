@@ -1,67 +1,85 @@
-public class TurboliftSystem extends BennanteEinrichtung{
+class TurboliftSystem extends BenannteEinrichtung {
 	public int alarmStufe;
 	private Steuerung steuerung;
 	private TurboliftSchacht[] turboliftSchaechte;
 	public TurboliftSystem(String name, TurboliftSchacht[] turboliftSchaechte, Steuerung steuerung) {
 		super();
-		this.steuerung = steuerung;
-		this.turboliftSchaechte = turboliftSchaechte;
 	}
-	
+
 }
 
-abstract class BennanteEinrichtung {
+abstract class BenannteEinrichtung {
 	protected String name;
+
 }
 
-class Steuerung {
-	protected TurboliftSchacht[] turboliftSchaechte;
-	public Steuerung(TurboliftSchacht[] turboliftSchaechte) {
-		this.turboliftSchaechte = turboliftSchaechte;
-	}
-}
-
-class TurboliftSchacht extends BennanteEinrichtung{
-	public boolean vertikal;
-	private Kabine kabine = new Kabine();
-	protected Deck[] decks;
-	private Antrieb antrieb = new Antrieb();
-	
-	public TurboliftSchacht(String name, Deck[] decks) {
-		super();
-		this.decks = decks;
-	}
-	public void bediene (Deck ziel) {}
-	
-	public Deck gibPosition() {
-		return this.kabine.position;
-	}
-	
-	public Deck[] gibFahrtziele() {
-		return this.kabine.fahrtZiele;
-	}
-	
-}
-
-class Deck extends BennanteEinrichtung{
+class Deck extends BenannteEinrichtung {
 	public String sektion;
 	public boolean fahrtWunsch;
+
 	public Deck(String name) {
 		super();
+
+	}
+}
+
+class Kabine {
+	public Deck position;
+	public Deck[] fahrtziele;
+
+	public boolean tuerZustand;
+
+	public void veraendereTuerZustand(boolean tuerZustand) {
 	}
 }
 
 class Antrieb {
-	public final String ANTRIEBSART = "Linearantrieb";
-	
-	public void start(int richtung, float geschwindigkeit) {}
-	
-	public void stop() {}
+	public String ANTRIEBSART = "Linearantrieb";
+
+	public void start(int richtung, float geschwindigkeit) {
+	}
+
+	public void stop() {
+	}
 }
 
-class Kabine {
-	public boolean tuerZustand;
-	public Deck position;
-	public Deck[] fahrtZiele;
-	public void veraenderteTuerZustand(boolean tuerZustand) {}
+class Steuerung {
+	protected TurboliftSchacht[] turoliftSchaechte;
+	public Steuerung(TurboliftSchacht[] turboliftSchaechte) {
+		super();
+	}
 }
+
+class TurboliftSchacht extends BenannteEinrichtung {
+	protected Deck[] decks;
+	public boolean vertikal;
+	private Antrieb antrieb = new Antrieb() ;
+	private Kabine kabine = new Kabine();
+
+	public TurboliftSchacht(String name, Deck[] decks) {
+		super();
+		this.decks = decks;
+	}
+
+	
+
+	public void bediene(Deck ziel) {
+
+	}
+
+	public Deck gibPosition() {
+		return this.kabine.position;
+
+	}
+
+	public Deck[] gibFahrtziele() {
+		return this.kabine.fahrtziele;
+
+	}
+
+}
+
+
+
+
+

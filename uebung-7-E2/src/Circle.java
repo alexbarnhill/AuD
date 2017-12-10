@@ -1,26 +1,17 @@
 public class Circle extends OrigCircle {
-	private int x;
-	private int y;
-	private int r;
-	private Color color;
-	
-	private PixelPainter painter;
+	private int dx;
+	private int dy;
+	private ShiftPainter painter;
 	
 	public Circle(int x, int y, int r, Color color) {
 		super(r, color);
-		this.x = x;
-		this.y = y;
-		this.r = r;
-		this.color = color;
-	}
-	
-	public void setPainter(int dx, int dy, PixelPainter painter) {
-		this.painter = new ShiftPainter(this.x + dx, this.y + dy, painter);
+		this.dx = x;
+		this.dy = y;
 	}
 	
 	@Override
 	public void setPainter(PixelPainter painter) {
-		this.painter = painter;
+		this.painter = new ShiftPainter(dx, dy, painter);
 		
 	}
 
@@ -31,7 +22,7 @@ public class Circle extends OrigCircle {
 
 	@Override
 	public void draw() {
-		super.setPainter(this.getPainter());
+		super.setPainter(this.painter);
 		super.draw();
 	}
 }

@@ -1,146 +1,178 @@
-public class GemischterBruch extends AbstrakterGemischterBruch {	
+public class GemischterBruch extends AbstrakterGemischterBruch {
+
+	public GemischterBruch(long a, long b) {
+		super(!((a < 0) ^ (b < 0)), 0, a, b);
+	}
+
 	public GemischterBruch(long x, long y, long z) {
-		super( !( (x < 0) ^ (y < 0) ^ (z < 0) ), x, y, z);
-	}
-	
-	public GemischterBruch(long x, long y) {
-		super(!(x < 0 ^ y < 0), 0, x, y);
-	}
-	
-	private GemischterBruch(boolean positive, long x, long y, long z) {
-		super(positive, x, y, z);
+		super(!((x < 0) ^ (y < 0) ^ (z < 0)), x, y, z);
+
 	}
 
 	@Override
 	public int compareTo(AbstrakterGemischterBruch arg0) {
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
 
-		GemischterBruch firstSimplified = this.vereinfache();
-		GemischterBruch arg0Simplified = (GemischterBruch) arg0.vereinfache();
-	
-		if(firstSimplified.holeGanzzahligerAnteil() < arg0Simplified.holeGanzzahligerAnteil()) {
+		long x = arg0.holeGanzzahligerAnteil();
+		long z = arg0.holeNenner();
+		long y = arg0.holeZaehler();
+
+		double bruch1 =  (double) (a * c + b) / (double) c;
+		double bruch2 =  (double) (x * z + y) / (double) z;
+		if (bruch1 < bruch2) {
 			return -1;
-		} else if(firstSimplified.holeGanzzahligerAnteil() > arg0Simplified.holeGanzzahligerAnteil()) {
+		}
+		if (bruch1 == bruch2) {
+			return 0;
+		}
+		if (bruch1 > bruch2) {
 			return 1;
-		} else if(firstSimplified.holeGanzzahligerAnteil() == arg0Simplified.holeGanzzahligerAnteil()) {
-			try {
-				double first = (double) firstSimplified.holeZaehler() / (double) firstSimplified.holeNenner();
-				double second = (double) arg0Simplified.holeZaehler() / (double) arg0Simplified.holeNenner();
-				if (first < second) {
-					return -1;
-				} else if(first > second) {
-					return 1;
-				} else {
-					return 0;
-				}
-			} catch(IllegalArgumentException e) {
-				System.err.println(e.getMessage());
-			} catch(ArithmeticException e) {
-				System.err.println(e.getMessage());
-			} catch(Exception e) {
-				System.err.println(e.getMessage());
-			}
-			
-				
-					
 		}
 		return 0;
+
+
 	}
 
 	@Override
-	public GemischterBruch vereinfache() {
-		long ggt = super.ggT(super.holeZaehler(), super.holeNenner());
-		long newDen = super.holeNenner() / ggt;
-		long newNom = super.holeZaehler() / ggt;
-		long newWhole = super.holeGanzzahligerAnteil();
-		if(newNom >= newDen) {
-			while(newNom >= newDen) {
-				newNom -= newDen;
-				newWhole++;
-			}
+	public AbstrakterGemischterBruch vereinfache() {
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
+
+		long yn = (a * c + b) % c;
+		long x = ((a * c + b) - yn) / c;
+
+		long y = yn / ggT(yn, c);
+		long z = c / ggT(yn, c);
+
+		if (super.istPositiv() == false) {
+			y = y * (-1);
 		}
 
-		if(!super.istPositiv()) {
-			newNom *= -1;
-		}
-		
-		return new GemischterBruch(newWhole, newNom , newDen);
+		AbstrakterGemischterBruch b1 = new GemischterBruch(x, y, z);
+		// TODO Auto-generated method stub
+		return b1;
 	}
 
 	@Override
-	public GemischterBruch multipliziereMit(AbstrakterGemischterBruch andere) {
-		boolean isPositive = !(super.istPositiv() ^ andere.istPositiv());
-		int sign = isPositive ? 1 : -1;
-		
-		GemischterBruch first = new GemischterBruch((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler(), super.holeNenner());
-		GemischterBruch second = new GemischterBruch((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler(), andere.holeNenner());
-		GemischterBruch result = new GemischterBruch(first.holeZaehler() * second.holeZaehler() * sign, first.holeNenner() * second.holeNenner());
-		
-		return result;
+	public AbstrakterGemischterBruch multipliziereMit(AbstrakterGemischterBruch andere) {
+		// TODO Auto-generated method stub
+		long x = andere.holeGanzzahligerAnteil();
+		long z = andere.holeNenner();
+		long y = andere.holeZaehler();
+
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
+
+		if ((super.istPositiv() == false && andere.istPositiv())) {
+			b = b * (-1);
+		} else if ((super.istPositiv() && andere.istPositiv() == false)) {
+			y = y * (-1);
+		} else if ((super.istPositiv() == false && andere.istPositiv() == false)) {
+			b = b * (-1);
+			y = y * (-1);
+		}
+
+		long zaehler = (a * c + b) * (x * z + y);
+		long nenner = c * z;
+
+		AbstrakterGemischterBruch b1 = new GemischterBruch(0, zaehler, nenner);
+
+		return b1.vereinfache();
+
 	}
 
 	@Override
 	public AbstrakterGemischterBruch dividiereDurch(AbstrakterGemischterBruch andere) {
-		boolean isPositive = !(super.istPositiv() ^ andere.istPositiv());
-		int sign = isPositive ? 1 : -1;
-		
-		GemischterBruch first = new GemischterBruch((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler(), super.holeNenner());
-		GemischterBruch second = new GemischterBruch((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler(), andere.holeNenner());
-		GemischterBruch result = new GemischterBruch(first.holeZaehler() * second.holeNenner() * sign, first.holeNenner() * second.holeZaehler());
-		
-		return result;
+		long x = andere.holeGanzzahligerAnteil();
+		long z = andere.holeNenner();
+		long y = andere.holeZaehler();
+
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
+
+		if ((super.istPositiv() == false && andere.istPositiv())) {
+			b = b * (-1);
+		} else if ((super.istPositiv() && andere.istPositiv() == false)) {
+			y = y * (-1);
+		} else if ((super.istPositiv() == false && andere.istPositiv() == false)) {
+			b = b * (-1);
+			y = y * (-1);
+		}
+
+		long zaehler = (a * c + b) * z;
+		long nenner = c * (x * z + y);
+
+		AbstrakterGemischterBruch b1 = new GemischterBruch(0, zaehler, nenner);
+
+		return b1.vereinfache();
+
 	}
 
 	@Override
-	public GemischterBruch addiereZu(AbstrakterGemischterBruch andere) {
-		if((this.istPositiv() && andere.istPositiv() ) || (!this.istPositiv() && !andere.istPositiv())) {
-			int sign = (this.istPositiv() && andere.istPositiv()) ? 1 : -1;
-			GemischterBruch first = new GemischterBruch((((super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner() * sign), super.holeNenner() * andere.holeNenner());
-			GemischterBruch second = new GemischterBruch((((andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner() * sign), andere.holeNenner() * super.holeNenner());
-			
-			GemischterBruch result = new GemischterBruch((first.holeZaehler() + second.holeZaehler()) * sign, first.holeNenner()).vereinfache();
-			return result;
-		} else if(this.istPositiv() && !andere.istPositiv()) {
-			GemischterBruch newOther = new GemischterBruch(+andere.holeGanzzahligerAnteil(), +andere.holeZaehler(), +andere.holeNenner());
-			return this.subtrahiereDavon(newOther);
-		} else if(!this.istPositiv() && andere.istPositiv()) {
-			GemischterBruch newOrig = new GemischterBruch(this.holeGanzzahligerAnteil(), this.holeZaehler(), this.holeNenner());
-			GemischterBruch newOther = new GemischterBruch(andere.holeGanzzahligerAnteil(), andere.holeZaehler(), andere.holeNenner());
-			return newOther.subtrahiereDavon(newOrig);
+	public AbstrakterGemischterBruch addiereZu(AbstrakterGemischterBruch andere) {
+		long x = andere.holeGanzzahligerAnteil();
+		long z = andere.holeNenner();
+		long y = andere.holeZaehler();
 
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
+
+		int vz1 = 1;
+		int vz2 = 1;
+
+		if ((super.istPositiv() == false && andere.istPositiv())) {
+			vz1 = -1;
+		} else if ((super.istPositiv() && andere.istPositiv() == false)) {
+			vz2 = -1;
+		} else if ((super.istPositiv() == false && andere.istPositiv() == false)) {
+			vz1 = -1;
+			vz2 = -1;
 		}
-		
-		return new GemischterBruch(0, 0, 0);
-		
+
+		long zaehler = vz1 * (a * c + b) * z + vz2 * (x * z + y) * c;
+		long nenner = c * z;
+
+		AbstrakterGemischterBruch b1 = new GemischterBruch(0, zaehler, nenner);
+
+		return b1.vereinfache();
+
+
 	}
 
 	@Override
-	public GemischterBruch subtrahiereDavon(AbstrakterGemischterBruch andere) {
+	public AbstrakterGemischterBruch subtrahiereDavon(AbstrakterGemischterBruch andere) {
+		long x = andere.holeGanzzahligerAnteil();
+		long z = andere.holeNenner();
+		long y = andere.holeZaehler();
 
-		if(( andere.istPositiv() ) ) {
-			GemischterBruch result;
-			int sign1 = (this.istPositiv()) ? 1 : -1;
-			int sign2 = (andere.istPositiv()) ? 1 : -1;
-			GemischterBruch first = new GemischterBruch(( ( (super.holeNenner() * super.holeGanzzahligerAnteil()) + super.holeZaehler()) * andere.holeNenner()) * sign1, super.holeNenner() * andere.holeNenner());
-			GemischterBruch second = new GemischterBruch(( ( (andere.holeNenner() * andere.holeGanzzahligerAnteil()) + andere.holeZaehler()) * super.holeNenner()) * sign2, andere.holeNenner() * super.holeNenner());
-			if(!this.istPositiv()) {
-				result = new GemischterBruch(((first.holeZaehler() + second.holeZaehler()) * -1), first.holeNenner()).vereinfache();
-			} else {
-				result = new GemischterBruch((first.holeZaehler() - second.holeZaehler() * 1), first.holeNenner()).vereinfache();
+		long a = super.holeGanzzahligerAnteil();
+		long b = super.holeZaehler();
+		long c = super.holeNenner();
+		int vz1 = 1;
+		int vz2 = 1;
 
-			}
-			if (result.holeGanzzahligerAnteil() == 0 && result.holeZaehler() == 0) {
-				return new GemischterBruch(0, 0, 1);
-			}
-			return result;
-
-		} else if(!andere.istPositiv()) {
-			GemischterBruch newOther = new GemischterBruch(+andere.holeGanzzahligerAnteil(), +andere.holeZaehler(), +andere.holeNenner());
-			return this.addiereZu(newOther);
-		} else {
-			
+		if ((super.istPositiv() == false && andere.istPositiv())) {
+			vz1 = (-1);
+		} else if ((super.istPositiv() && andere.istPositiv() == false)) {
+			vz2 = (-1);
+		} else if ((super.istPositiv() == false && andere.istPositiv() == false)) {
+			vz1 = (-1);
+			vz2 = (-1);
 		}
-		
-		return new GemischterBruch(0, 0, 0);
+
+		long zaehler = vz1 * (a * c + b) * z - vz2 * (x * z + y) * c;
+		long nenner = c * z;
+
+		AbstrakterGemischterBruch b1 = new GemischterBruch(0, zaehler, nenner);
+
+		return b1.vereinfache();
+
 	}
 
 }

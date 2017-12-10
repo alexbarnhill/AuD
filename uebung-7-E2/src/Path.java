@@ -42,7 +42,15 @@ public class Path implements Drawable{
 			} else if(path[i] == 1 || path[i] == 0 || path[i] == 7) {
 				currentX++;
 			}
-			painter.set(currentX, currentY, this.color);
+			if(currentX >= painter.getMinX() && currentX <= painter.getMaxX() && currentY >= painter.getMinX() && currentY <= painter.getMaxY()) {
+				try {
+					painter.set(currentX, currentY, this.color);
+				} catch(ArrayIndexOutOfBoundsException e ) {
+					System.err.println(e.getMessage());
+				}
+				
+			}
+			
 			
 		}
 	}

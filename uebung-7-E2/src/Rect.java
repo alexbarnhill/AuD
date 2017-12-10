@@ -30,9 +30,13 @@ public class Rect implements Drawable{
 		PixelPainter painter = this.getPainter();
 		for(int i = this.x; i < this.x + this.width; i++) {
 			
-			for(int j = this.y; j < this.y + this.height; j++) {	
+			for(int j = this.y; j < this.y + this.height; j++) {
+				try {
+					painter.set(i, j, this.color);
+				} catch(ArrayIndexOutOfBoundsException e) {
+					System.err.println(e.getMessage());
+				}
 				
-				painter.set(i, j, this.color);
 			}
 		}
 		

@@ -27,7 +27,15 @@ public class HLine implements Drawable{
 	public void draw() {
 		PixelPainter painter = this.getPainter();
 		for(int i = x0; i <= x1; i++) {
-			painter.set(i, this.y, this.color);
+			if(i >= painter.getMinX() && i <= painter.getMaxX()) {
+				try {
+					painter.set(i, this.y, this.color);
+				} catch(ArrayIndexOutOfBoundsException e) {
+					System.err.println(e.getMessage());
+				}
+				
+			}
+			
 			
 		}
 		
