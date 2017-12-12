@@ -9,15 +9,22 @@ public class SchiffVersenken {
 	private int treffer;
 
 	public SchiffVersenken(int hoehe, int breite, int maxFehlversuche) {
+		Log.log("First");
 		if (hoehe < 2) {
+			Log.log("Second");
 			hoehe = 2;
 		}
+		Log.log("Third");
 		if (breite < 2) {
+			Log.log("Fourth");
 			breite = 2;
 		}
+		Log.log("Fifth");
 		if (maxFehlversuche < 2) {
+			Log.log("Sixth");
 			maxFehlversuche = 2;
 		}
+		Log.log("Seventh");
 		this.hoehe = hoehe;
 		this.breite = breite;
 		this.maxFehlversuche = maxFehlversuche;

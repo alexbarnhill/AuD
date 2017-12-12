@@ -1,67 +1,153 @@
 public class SchiffVersenkenZweigueberdeckungsTest {
+	
 	@Test
-	public void positioniereSchiffTestOffGrid() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		boolean result = s1.positioniereSchiff(-1, -1, 4, true);
-		Assert.assertEquals("Should return false!", false, result);
+	public void con_test_1() {
+		new SchiffVersenken(10, 10, 5);
 	}
 	
 	@Test
-	public void positioniereSchiffTestTooTall() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		boolean result = s1.positioniereSchiff(4, 5, 20, true);
-		Assert.assertEquals("Should return false!", false, result);
+	public void con_test_2() {
+		new SchiffVersenken(1, 2, 5);
 	}
 	
 	@Test
-	public void positioniereSchiffTestTooWide() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		boolean result = s1.positioniereSchiff(4, 5, 20, false);
-		Assert.assertEquals("Should return false!", false, result);
+	public void con_test_3() {
+		new SchiffVersenken(2, 1, 5);
 	}
 	
 	@Test
-	public void positioniereSchiffTestSuccessfulPlacement() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		boolean result = s1.positioniereSchiff(4, 5, 4, false);
-		Assert.assertEquals("Should be able to be placed", true, result);
+	public void con_test_4() {
+		new SchiffVersenken(1, 1, 5);
 	}
 	
 	@Test
-	public void spielzugAusfuehrenOffGrid() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		int result = s1.spielzugAusfuehren(-1, 10);
-		Assert.assertEquals("Placement off grid registered incorrectly!", 0, result);
+	public void con_test_5() {
+		new SchiffVersenken(1, 1, 1);
 	}
 	
 	@Test
-	public void spielzugAusfuehrenMultipleMisses() {
-		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		s1.positioniereSchiff(2, 4, 4, false);
-		int result1 = s1.spielzugAusfuehren(1, 2);
-		Assert.assertEquals("Placement off grid registered incorrectly!", 1, result1);
-		int result2 = s1.spielzugAusfuehren(1, 3);
-		Assert.assertEquals("Placement off grid registered incorrectly!", 1, result2);
-		int result3 = s1.spielzugAusfuehren(1, 4);
-		Assert.assertEquals("Placement off grid registered incorrectly!", 1, result3);
-		int result4 = s1.spielzugAusfuehren(1, 5);
-		Assert.assertEquals("Placement off grid registered incorrectly!", 1, result4);
-		int result5 = s1.spielzugAusfuehren(1, 6);
-		Assert.assertEquals("Placement off grid registered incorrectly! You should have lost by now.", -1, result5);
+	public void con_test_6() {
+		new SchiffVersenken(2, 1, 1);
 	}
 	
 	@Test
-	public void spielzugAusfuehrenMultipleHits() {
+	public void con_test_7() {
+		new SchiffVersenken(1, 2, 1);
+	}
+	
+	@Test
+	public void con_test_8() {
+		new SchiffVersenken(2, 2, 1);
+	}
+	
+	
+	@Test
+	public void positioniereSchiff() {
 		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
-		s1.positioniereSchiff(2, 4, 4, false);
-		int result1 = s1.spielzugAusfuehren(2, 4);
-		Assert.assertEquals("Hit placement registered incorrectly!", 2, result1);
-		int result2 = s1.spielzugAusfuehren(2, 5);
-		Assert.assertEquals("Hit placement incorrectly!", 2, result2);
-		int result3 = s1.spielzugAusfuehren(2, 6);
-		Assert.assertEquals("Hit placement incorrectly!", 2, result3);
-		int result4 = s1.spielzugAusfuehren(2, 7);
-		Assert.assertEquals("Hit placement incorrectly! You should have won by now.", -2, result4);
+		boolean result = s1.positioniereSchiff(2, 2, 2, false);
+		Assert.assertEquals("Ship placed incorrectly!", true, result);
+	}
+	
+	@Test
+	public void positioniereSchiff_vert() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
+		boolean result = s1.positioniereSchiff(2, 2, 2, true);
+		Assert.assertEquals("Ship placed incorrectly!", true, result);
+	}
+	
+	@Test
+	public void spielzugTest() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
+		s1.positioniereSchiff(2, 2, 2, false);
+		int result2 = s1.spielzugAusfuehren(2, 2);
+		Assert.assertEquals("Should have been registered as a hit", 2, result2);
+		
+	}
+	
+	@Test
+	public void spielzugTest_miss() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
+		s1.positioniereSchiff(2, 2, 2, false);
+		int result2 = s1.spielzugAusfuehren(1, 1);
+		Assert.assertEquals("Should have been registered as a miss", 1, result2);
+		
+	}
+	
+	@Test
+	public void spielzugTest_loss() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		s1.positioniereSchiff(2, 2, 2, false);
+		s1.spielzugAusfuehren(1, 1);
+		int result2 = s1.spielzugAusfuehren(1, 2);
+		Assert.assertEquals("You should have lost", -1, result2);
+		
+	}
+	
+	@Test
+	public void spielzugTest_won() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		s1.positioniereSchiff(2, 2, 2, false);
+		s1.spielzugAusfuehren(2, 2);
+		int result2 = s1.spielzugAusfuehren(3, 2);
+		Assert.assertEquals("You should have won!", -2, result2);
+		
+	}
+	
+	@Test
+	public void spielzugTest_offBase() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		s1.positioniereSchiff(2, 2, 2, false);
+		int result2 = s1.spielzugAusfuehren(-1, 2);
+		Assert.assertEquals("You shouldn't have shot there", 0, result2);
+		
+	}
+	
+	@Test
+	public void positioniereShiff_tooLong() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(2, 2, 20, false);
+		Assert.assertEquals("Your boat was too big", false, result);
+		
+	}
+
+	@Test
+	public void positioniereShiff_tooTall() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(2, 2, 20, true);
+		Assert.assertEquals("Your boat was too big", false, result);
+		
+	}
+	
+	@Test
+	public void positioniereShiff_WrongPlacement_1() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(20, 2, 2, true);
+		Assert.assertEquals("Your boat was not in the water", false, result);
+		
+	}
+	
+	@Test
+	public void positioniereShiff_WrongPlacement_2() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(2, 20, 2, true);
+		Assert.assertEquals("Your boat was not in the water", false, result);
+		
+	}
+	
+	@Test
+	public void positioniereShiff_WrongPlacement_3() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(-2, 2, 2, true);
+		Assert.assertEquals("Your boat was not in the water", false, result);
+		
+	}
+	
+	@Test
+	public void positioniereShiff_WrongPlacement_4() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 2);
+		boolean result = s1.positioniereSchiff(2, -2, 2, true);
+		Assert.assertEquals("Your boat was not in the water", false, result);
+		
 	}
 	
 	@Test
@@ -75,5 +161,12 @@ public class SchiffVersenkenZweigueberdeckungsTest {
 		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
 		s1.neuesSpielfeld();
 		s1.feldAusgeben(true);
+	}
+	
+	@Test
+	public void feldAusgebenTest_2() {
+		SchiffVersenken s1 = new SchiffVersenken(10, 10, 5);
+		s1.neuesSpielfeld();
+		s1.feldAusgeben(false);
 	}
 }

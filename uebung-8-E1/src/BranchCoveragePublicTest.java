@@ -16,23 +16,19 @@ public class BranchCoveragePublicTest {
 	public static final String SUT_SUT_METHOD_positioniereSchiff = "positioniereSchiff";
 	public static final String SUT_SUT_METHOD_feldAusgeben = "feldAusgeben";
 	public static final String SUT_SUT_METHOD_spielzugAusfuehren = "spielzugAusfuehren";
-	private static final String[] SUT_SUT_METHODS_NON_VOID = { //
-			"[E@" + SUT_SUT_CLASS_NAME + "." + SUT_SUT_METHOD_positioniereSchiff + "]", //
-			"[E@" + SUT_SUT_CLASS_NAME + "." + SUT_SUT_METHOD_spielzugAusfuehren + "]", //
-	};
 
 	// ========== Test the test #-) ==========
 	@org.junit.Test(timeout = 1666)
 	public void pubTest__BrachCoverage_of__neuesSpielfeld__PUBLIC_TEST() {
 		scan_test_case_methods();
 		String[][] edges = { { "I", "1" }, { "1", "2" }, { "2", "3" }, { "3", "2" }, { "2", "4" }, { "4", "1" }, { "1", "5" }, { "5", "E" }, };
-		BranchCoveragePublicTest.runTestsAndCheckTrace(testCaseMethods, BranchCoveragePublicTest.SUT_SUT_CLASS_NAME, BranchCoveragePublicTest.SUT_SUT_METHOD_neuesSpielfeld, edges, true);
+		BranchCoveragePublicTest.runTestsAndCheckTrace(testCaseMethods, true, BranchCoveragePublicTest.SUT_SUT_CLASS_NAME, BranchCoveragePublicTest.SUT_SUT_METHOD_neuesSpielfeld, edges, null);
 	}
 
 	@org.junit.Test(timeout = 1666)
 	public void pubTest__use_of_Assert__in__positioniereSchiff__PUBLIC_TEST() {
 		scan_test_case_methods();
-		BranchCoveragePublicTest.runTestsAndCheckTrace(testCaseMethods, BranchCoveragePublicTest.SUT_SUT_CLASS_NAME, BranchCoveragePublicTest.SUT_SUT_METHOD_positioniereSchiff, null, true);
+		BranchCoveragePublicTest.runTestsAndCheckTrace(testCaseMethods, true, BranchCoveragePublicTest.SUT_SUT_CLASS_NAME, null, null, BranchCoveragePublicTest.SUT_SUT_METHOD_positioniereSchiff);
 	}
 
 	// ========== AuD-fake-runner and coverage checker ==========
@@ -50,7 +46,7 @@ public class BranchCoveragePublicTest {
 		org.junit.Assert.assertNotEquals("You should provide at least one test case (test method)!", 0, testCaseMethods.size());
 	}
 
-	protected static void runTestsAndCheckTrace(List<Method> testCaseMethods, String className, String methodName, String[][] edges, boolean noFailedTest) {
+	protected static void runTestsAndCheckTrace(List<Method> testCaseMethods, boolean noFailedTest, String className, String methodNameForEdgeCoverageCheck, String[][] edges, String methodNameForAssertCheck) {
 		Log.resetTrace();
 		int testsRun = 0, testsFailed = 0;
 		String result = "";
@@ -81,35 +77,35 @@ public class BranchCoveragePublicTest {
 			org.junit.Assert.assertNotEquals("Your test cases should have had failures due to your asserts, but it doesn't seem that you detected them...", "", result);
 		}
 		String trace = Log.getTrace();
-		if (edges != null) {
+		if (methodNameForEdgeCoverageCheck != null && edges != null) {
 			String[] expectedTraceEntries = new String[edges.length];
 			for (int i = 0; i < edges.length; i++) {
-				expectedTraceEntries[i] = "[" + edges[i][0] + "@" + className + "." + methodName + "][" + edges[i][1] + "@" + className + "." + methodName + "]";
+				expectedTraceEntries[i] = "[" + edges[i][0] + "@" + className + "." + methodNameForEdgeCoverageCheck + "][" + edges[i][1] + "@" + className + "." + methodNameForEdgeCoverageCheck + "]";
 			}
 			for (String expectedTraceEntry : expectedTraceEntries) {
-				org.junit.Assert.assertTrue("Kante nicht ueberdeckt: " + expectedTraceEntry, trace.contains(expectedTraceEntry));
+				org.junit.Assert.assertTrue("Edge not covered: " + expectedTraceEntry, trace.contains(expectedTraceEntry));
 			}
-		} else {
-			int assertCalls = 0;
+		}
+		if (methodNameForAssertCheck != null) {
 			String assertLogString = "[A@Assert.assertEquals<";
-			for (String last : SUT_SUT_METHODS_NON_VOID) {
-				int pos = 0;
-				while (pos >= 0) {
-					pos = trace.indexOf(last, pos);
-					if (pos >= 0) {
-						pos += last.length();
-						org.junit.Assert.assertTrue("You should have called Assert.assertEquals(...) immediately after " + last, trace.startsWith(assertLogString, pos));
-						if (!noFailedTest && last.endsWith("Schiff]")) {
-							org.junit.Assert.assertTrue("I am missing the real actual value in the assert message after " + last, trace.startsWith("true", pos + assertLogString.length()) || trace.startsWith("false", pos + assertLogString.length()));
-						} else if (!noFailedTest) {
-							org.junit.Assert.assertTrue("I am missing the real actual value in the assert message after " + last, trace.startsWith("47110815", pos + assertLogString.length()));
-						}
-						assertCalls++;
+			String lastLogEntry = "[E@" + className + "." + methodNameForAssertCheck + "]";
+			int assertCalls = 0;
+			int pos = 0;
+			while (pos >= 0) {
+				pos = trace.indexOf(lastLogEntry, pos);
+				if (pos >= 0) {
+					pos += lastLogEntry.length();
+					org.junit.Assert.assertTrue("You should have called Assert.assertEquals(...) immediately after " + methodNameForAssertCheck, trace.startsWith(assertLogString, pos));
+					assertCalls++;
+					if (!noFailedTest && methodNameForAssertCheck.endsWith("Schiff]")) {
+						org.junit.Assert.assertTrue("I am missing the real actual value in the assert message after " + methodNameForAssertCheck, trace.startsWith("true", pos + assertLogString.length()) || trace.startsWith("false", pos + assertLogString.length()));
+					} else if (!noFailedTest) {
+						org.junit.Assert.assertTrue("I am missing the real actual value in the assert message after " + methodNameForAssertCheck, trace.startsWith("47110815", pos + assertLogString.length()));
 					}
-					pos = trace.indexOf(last, pos);
 				}
+				pos = trace.indexOf(lastLogEntry, pos);
 			}
-			org.junit.Assert.assertNotEquals("You should have called Assert.assertEquals(...) at least once per test call to each of the methods returning a value!", 0, assertCalls);
+			org.junit.Assert.assertNotEquals("You should have called Assert.assertEquals(...) at least once per test call to each of the methods returning a value! But you missed a call to: " + methodNameForAssertCheck, 0, assertCalls);
 		}
 	}
 

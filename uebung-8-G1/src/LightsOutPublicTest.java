@@ -83,6 +83,20 @@ public class LightsOutPublicTest {
 		long stateActual = lightsOut.getState();
 		assertEquals("Your cons failed.", stateExpected, stateActual);
 	}
+	
+	@Test(timeout = 666)
+	public void pubTest__cons__noException2() {
+		// state_|mask_|=>|after_cons
+		// +++++_|#----|=>|-++++
+		// +++++_|-##--|=>|+--++
+		// -++-++|---##|=>|-++--
+		long state = 0b0________11_01111_10110_10111_11101;
+		long mask = 0b0____________10011_11000_00110_00001;
+		long stateExpected = 0b0___01100_00110_10001_11100;
+		LightsOut lightsOut = new LightsOut(5, 4, state, mask);
+		long stateActual = lightsOut.getState();
+		assertEquals("Your cons failed.", stateExpected, stateActual);
+	}
 
 	@Test(timeout = 666, expected = IllegalArgumentException.class)
 	public void pubTest__cons__withException() {
@@ -105,6 +119,63 @@ public class LightsOutPublicTest {
 		lightsOut.toggle(1, 1);
 		long stateActual = lightsOut.getState();
 		assertEquals("You toggled wrong.", stateExpected, stateActual);
+	}
+	
+	@Test(timeout = 666)
+	public void pubTest__toggle2() {
+		// state|mask|toggle|=>|after_toggle
+		// -+---__|-#-##_|---___|=>|-----
+		// -+++-__|#----_|-X-___|=>|---+-
+		// ---++__|-----_|---___|=>|-+-++
+		// +++-+__|#-###_|---___|=>|-+---
+		long state = 0b0__________10111_11000_01110_00010;
+		long mask = 0b0___________11101_00000_00001_11010;
+		long stateExpected = 0b0__00010_11010_01000_00000;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(1, 1);
+		long stateActual = lightsOut.getState();
+		assertEquals("You toggled wrong.", stateExpected, stateActual);
+	}
+	
+	@Test(timeout = 666)
+	public void pubTest__toggle3() {
+		// state|mask|toggle|=>|after_toggle
+		// -+---__|-#-##_|-----___|=>|-----
+		// -+++-__|#----_|-----___|=>|-+++-
+		// ---++__|-----_|-----___|=>|---++
+		// +++-+__|#-###_|-----___|=>|-----
+		// --+--__|-----_|-X---___|=>|++---
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		long stateExpected = 0b0__00011_00000_11000_01110_00000;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(1, 4);
+		long stateActual = lightsOut.getState();
+		assertEquals("You toggled wrong.", stateExpected, stateActual);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(6, 4);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException2() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(5, 4);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException3() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(-1, 4);
 	}
 
 	@Test(timeout = 666)
