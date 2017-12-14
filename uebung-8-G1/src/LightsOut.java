@@ -154,7 +154,13 @@ public class LightsOut {
 			return this.merk.verrateMirDieSchaltfolgeZum(0);
 		}
 		
-	
+		// The idea is simple...
+		// Go through the old states
+		// For every old state, get the Folge for that state
+		// For every entity on the board, add it to the previous state
+		// See if this new state is correct
+		// At any rate add the new state and the Folge to the List
+		
 		for(int i = 0; i < prev.length; i++) {
 			long prevState = prev[i];
 			ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
