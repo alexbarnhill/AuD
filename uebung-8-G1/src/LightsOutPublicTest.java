@@ -178,7 +178,7 @@ public class LightsOutPublicTest {
 		lightsOut.toggle(-1, 4);
 	}
 
-	@Test(timeout = 666)
+	@Test
 	public void pubTest__solve__baby() {
 		// state|mask_|=>|after_solve
 		// -+---|#---#|=>|-----

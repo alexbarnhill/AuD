@@ -6,7 +6,7 @@ public class LightsOut {
 	private int cols;
 	private long solved;
 	private long current;
-	private int depth = 1;
+	private int depth = 2;
 	private ZahlenFolgenMerker zf;
 	private MerkerFuerLightsOutLoesungsVersuche merk;
 	private ZahlenMerker zm;
@@ -15,7 +15,7 @@ public class LightsOut {
 		long mask = (1L << bits) - 1;
 		return state & mask;
 	}
-	public LightsOut(int rows, int cols, long state, long mask) {
+	public LightsOut(int cols, int rows, long state, long mask) {
 		if(rows <= 0 || cols <= 0) {
 			throw new IllegalArgumentException();
 		}
@@ -41,9 +41,10 @@ public class LightsOut {
 			}
 		}
 		
+		
 		this.current = this.state;
 		this.zf = new ZahlenFolgenMerker();
-		this.merk = new MerkerFuerLightsOutLoesungsVersuche();
+		this.merk = getInitialToggles(this.current);
 		this.zm = new ZahlenMerker();
 
 	}
@@ -86,59 +87,92 @@ public class LightsOut {
 	}
 	
 	public long toggleSet(int s, long set) {
+		long newSet = set;
 		int col = s % this.cols;
 		int row = s / this.cols;
 		if(col >= this.cols || row >= this.rows || col < 0 || row < 0) {
 			throw new IllegalArgumentException("Cannot Toggle Outisde of the field");
 		}
-		int pos = this.field.length * row + col;
-		if(!BitOps.isSet(this.mask, pos)) {
-			int over = this.field.length * (row - 1) + col;
-			int under = this.field.length * (row + 1) + col;
-			int left = this.field.length * (row) + (col - 1);
-			int right = this.field.length * row + (col + 1);
-			if(!BitOps.isSet(this.mask, pos)) {
-				set = BitOps.flip(set, pos);
+		if(!BitOps.isSet(this.mask, s)) {
+			int right = s + 1;
+			int left = s - 1;
+			int above = s - this.cols;
+			int below = s + this.cols;
+			
+			if(s >= 0 && s < (this.cols * this.rows)) {
+				newSet = BitOps.flip(newSet, s);
 			}
-			if(!BitOps.isSet(this.mask, over) && (row - 1) >= 0) {
-				set = BitOps.flip(set, over);
+			
+			if(left >= 0 && (left / this.cols) == (s / this.cols) && !BitOps.isSet(mask, left)) {
+				newSet = BitOps.flip(newSet, left);
 			}
-			if(!BitOps.isSet(this.mask, right) && (col + 1) <= this.cols - 1) {
-				set = BitOps.flip(set, right);
+			
+			if(right < (this.cols * this.rows) && (right / this.cols) == (s / this.cols) && !BitOps.isSet(mask, right)) {
+				newSet = BitOps.flip(newSet, right);
 			}
-			if(!BitOps.isSet(this.mask, under) && (row + 1) <= this.rows - 1) {
-				set = BitOps.flip(set, under);
+			
+			if(above >= 0  && !BitOps.isSet(mask, above)) {
+				newSet = BitOps.flip(newSet, above);
 			}
-			if(!BitOps.isSet(this.mask, left) && (col - 1) >= 0) {
-				set = BitOps.flip(set, left);
+			
+			if(below < (this.cols * this.rows) && !BitOps.isSet(mask, below)) {
+				newSet = BitOps.flip(newSet, below);
 			}
 		}
-		
-		
-		return set;
+		return newSet;
 
 
 	}
 	
+	public MerkerFuerLightsOutLoesungsVersuche getInitialToggles(long start) {
+		MerkerFuerLightsOutLoesungsVersuche merker = new MerkerFuerLightsOutLoesungsVersuche();
+		ZahlenFolgenMerker z;
+		for(int i = 0; i < ((this.rows * this.cols)); i++) {
+			if(!BitOps.isSet(this.mask, i)) {
+				long newState = this.toggleSet(i, start);
+				z = new ZahlenFolgenMerker();
+				z.ergaenze(i);
+				merker.merkeDir(newState, z);
+
+			}
+
+			
+		}
+		return merker;
+	}
+	
+	private void printIntegerArray(Integer[] a) {
+		for(int i = 0; i < a.length; i++) {
+			System.out.printf("%s ", a[i]);
+		}
+		System.out.println();
+	}
+	
 	public ZahlenFolgenMerker solve() {
-		if(this.current == 0) {
-			return this.zf;
+		long[] prev = this.merk.gibMirAlleZustaende();
+		if(this.merk.verrateMirDieSchaltfolgeZum(0) != null) {
+			return this.merk.verrateMirDieSchaltfolgeZum(0);
 		}
 		
-		for(int i = 0; i < (this.depth * (this.rows * this.cols)); i++) {
-			this.current = this.toggleSet(i, this.current);
-			if(this.current == 0) {
-				ZahlenFolgenMerker solution = new ZahlenFolgenMerker();
-				solution.ergaenze(i);
-				merk.merkeDir(this.current, solution);
-				
-				return solution;
-			} else {
-				this.current = this.toggleSet(i, this.current);
+	
+		for(int i = 0; i < prev.length; i++) {
+			long prevState = prev[i];
+			ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
+			for(int j = 0; j < (this.cols * this.rows); j++) {
+				if(!BitOps.isSet(this.mask, j)) {
+					ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
+					long newState = toggleSet(j, prevState);
+					System.out.println(newState);
+					newFolge.ergaenze(j);
+					if(newState == 0) {
+						return newFolge;
+					}
+					this.merk.merkeDir(newState, newFolge);
+					prevState = toggleSet(j, prevState);
+				}
 			}
 		}
-		
-		return merk.verrateMirDieSchaltfolgeZum(0);
+		return this.merk.verrateMirDieSchaltfolgeZum(0);
 	}
 	
 }
