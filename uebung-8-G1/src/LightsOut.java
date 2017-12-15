@@ -57,27 +57,30 @@ public class LightsOut {
 		if(col >= this.cols || row >= this.rows || col < 0 || row < 0) {
 			throw new IllegalArgumentException("Cannot Toggle Outisde of the field");
 		}
-		int pos = this.field.length * row + col;
-		
+		int pos = col + (row * this.cols);
 		if(!BitOps.isSet(this.mask, pos)) {
-			int over = this.field.length * (row - 1) + col;
-			int under = this.field.length * (row + 1) + col;
-			int left = this.field.length * (row) + (col - 1);
-			int right = this.field.length * row + (col + 1);
-			if(!BitOps.isSet(this.mask, pos)) {
-				this.state = BitOps.flip(this.getState(), pos);
+			int right = pos + 1;
+			int left = pos - 1;
+			int above = pos - this.cols;
+			int below = pos + this.cols;
+			if(pos >= 0 && pos < (this.cols * this.rows)) {
+				this.state = BitOps.flip(this.state, pos);
 			}
-			if(!BitOps.isSet(this.mask, over) && (row - 1) >= 0) {
-				this.state = BitOps.flip(this.getState(), over);
+			
+			if(left >= 0 && (left / this.cols) == (pos / this.cols) && !BitOps.isSet(mask, left)) {
+				this.state = BitOps.flip(this.state, left);
 			}
-			if(!BitOps.isSet(this.mask, right) && (col + 1) <= this.cols - 1) {
-				this.state = BitOps.flip(this.getState(), right);
+			
+			if(right < (this.cols * this.rows) && (right / this.cols) == (pos / this.cols) && !BitOps.isSet(mask, right)) {
+				this.state = BitOps.flip(this.state, right);
 			}
-			if(!BitOps.isSet(this.mask, under) && (row + 1) <= this.rows - 1) {
-				this.state = BitOps.flip(this.getState(), under);
+			
+			if(above >= 0  && !BitOps.isSet(mask, above)) {
+				this.state = BitOps.flip(this.state, above);
 			}
-			if(!BitOps.isSet(this.mask, left) && (col - 1) >= 0) {
-				this.state = BitOps.flip(this.getState(), left);
+			
+			if(below < (this.cols * this.rows) && !BitOps.isSet(mask, below)) {
+				this.state = BitOps.flip(this.state, below);
 			}
 		}
 		
@@ -153,7 +156,6 @@ public class LightsOut {
 		if(this.merk.verrateMirDieSchaltfolgeZum(0) != null) {
 			return this.merk.verrateMirDieSchaltfolgeZum(0);
 		}
-		
 		// The idea is simple...
 		// Go through the old states
 		// For every old state, get the Folge for that state
@@ -166,15 +168,16 @@ public class LightsOut {
 			ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
 			for(int j = 0; j < (this.cols * this.rows); j++) {
 				if(!BitOps.isSet(this.mask, j)) {
-					ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
-					long newState = toggleSet(j, prevState);
-					System.out.println(newState);
-					newFolge.ergaenze(j);
-					if(newState == 0) {
-						return newFolge;
+					if(prevFolge.gibtMirAlle().length == depth - 1) {
+						ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
+						long newState = toggleSet(j, prevState);
+						newFolge.ergaenze(j);
+						if(newState == 0) {
+							return newFolge;
+						}
+						this.merk.merkeDir(newState, newFolge);
 					}
-					this.merk.merkeDir(newState, newFolge);
-					prevState = toggleSet(j, prevState);
+
 				}
 			}
 		}

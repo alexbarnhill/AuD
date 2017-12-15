@@ -154,6 +154,23 @@ public class LightsOutPublicTest {
 		assertEquals("You toggled wrong.", stateExpected, stateActual);
 	}
 	
+	@Test(timeout = 666)
+	public void pubTest__toggle4() {
+		// state|mask|toggle|=>|after_toggle
+		// -+---__|-#-##_|-----___|=>|-----
+		// -+++-__|#----_|--X--___|=>|-+++-
+		// ---++__|-----_|-----___|=>|---++
+		// +++-+__|#-###_|-----___|=>|-----
+		// --+--__|-----_|-----___|=>|++---
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		long stateExpected = 0b0__00100_00010_11100_00000_00100;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(2, 1);
+		long stateActual = lightsOut.getState();
+		assertEquals("You toggled wrong.", stateExpected, stateActual);
+	}
+	
 	@Test(timeout = 666, expected = IllegalArgumentException.class)
 	public void pubTest__toggle__withException() {
 		long state = 0b0__________00100_10111_11000_01110_00010;
@@ -215,7 +232,7 @@ public class LightsOutPublicTest {
 		assertEquals("state must be cleaned by the cons but immutable during solve.", stateExpected, stateActual);
 		assertNotNull("There is a solution, I know it!", solutionActual);
 		assertEquals("One toggle is enough (6).", 1, solutionActual.length);
-		assertTrue("One toggle is enough (6) - but you gave me: " + Arrays.toString(solutionActual), (solutionActual[0] == 5));
+		assertTrue("One toggle is enough (6) - but you gave me: " + Arrays.toString(solutionActual), (solutionActual[0] == 6));
 	}
 
 	@Test(timeout = 6666)
