@@ -259,7 +259,7 @@ public class LightsOutPublicTest {
 		assertTrue("One toggle is enough (6) - but you gave me: " + Arrays.toString(solutionActual), (solutionActual[0] == 6));
 	}
 
-	@Test
+	@Test(timeout = 6666)
 	public void pubTest__solve__easy() {
 		LightsOutPublicTest.check_solve_with_solution(4, 7, 0b0_0110_1110_0011_0101_0010_1000_0100, 0b0_1000_0000_1100_1010_1000_0010_0011, 0b0_0110_1110_0011_0101_0010_1000_0100, 9);
 	}
