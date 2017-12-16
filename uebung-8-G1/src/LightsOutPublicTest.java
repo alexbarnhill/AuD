@@ -216,6 +216,30 @@ public class LightsOutPublicTest {
 	}
 	
 	@Test
+	public void pubTest__solve__toddler() {
+		// state|mask_|=>|after_solve
+		// -+---|#---#|=>|-----
+		// ++---|--#--|=>|-----
+		// --++-|#---#|=>|-----
+		// --+--|#---#|=>|-----
+		long state = 0b0__1110000_0100010_0000111_0100010_1110000L;
+		long mask = 0b0___0000000_0000000_0000000_0000000_0000000L;
+		long stateExpected = state;
+		LightsOut lightsOut = new LightsOut(7, 5, state, mask);
+		ZahlenFolgenMerker movesMerker = lightsOut.solve();
+		Integer[] solutionActual = movesMerker == null ? null : movesMerker.gibtMirAlle();
+		long stateActual = lightsOut.getState();
+		assertEquals("state must be cleaned by the cons but immutable during solve.", stateExpected, stateActual);
+		assertNotNull("There is a solution, I know it!", solutionActual);
+		assertEquals("Two toggles are enough here (5 and 15 and 33).", 3, solutionActual.length);
+		assertTrue("Two toggles are enough here (5 and 15 and 33) - but you gave me: " + Arrays.toString(solutionActual),
+				(solutionActual[0] == 5 && solutionActual[1] == 15) && solutionActual[2] == 33
+				|| (solutionActual[0] == 15 && solutionActual[1] == 5 && solutionActual[2] == 33)
+				|| (solutionActual[0] == 33 && solutionActual[1] == 5 && solutionActual[2] == 15) 
+				|| (solutionActual[0] == 5 && solutionActual[1] == 33 && solutionActual[2] == 15));
+	}
+	
+	@Test
 	public void pubTest__solve__one() {
 		// state|mask_|=>|after_solve
 		// -+---|#---#|=>|-----
@@ -235,7 +259,7 @@ public class LightsOutPublicTest {
 		assertTrue("One toggle is enough (6) - but you gave me: " + Arrays.toString(solutionActual), (solutionActual[0] == 6));
 	}
 
-	@Test(timeout = 6666)
+	@Test
 	public void pubTest__solve__easy() {
 		LightsOutPublicTest.check_solve_with_solution(4, 7, 0b0_0110_1110_0011_0101_0010_1000_0100, 0b0_1000_0000_1100_1010_1000_0010_0011, 0b0_0110_1110_0011_0101_0010_1000_0100, 9);
 	}

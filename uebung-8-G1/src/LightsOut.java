@@ -6,7 +6,7 @@ public class LightsOut {
 	private int cols;
 	private long solved;
 	private long current;
-	private int depth = 2;
+//	private int depth = 2;
 	private ZahlenFolgenMerker zf;
 	private MerkerFuerLightsOutLoesungsVersuche merk;
 	private ZahlenMerker zm;
@@ -151,6 +151,16 @@ public class LightsOut {
 		System.out.println();
 	}
 	
+	private boolean isNotIn(Integer[] a, int index) {
+		boolean result = true;
+		for(int i = 0; i < a.length; i++) {
+			if(a[i] == index) {
+				return false;
+			}
+		}
+		return result;
+	}
+	
 	public ZahlenFolgenMerker solve() {
 		long[] prev = this.merk.gibMirAlleZustaende();
 		if(this.merk.verrateMirDieSchaltfolgeZum(0) != null) {
@@ -162,24 +172,28 @@ public class LightsOut {
 		// For every entity on the board, add it to the previous state
 		// See if this new state is correct
 		// At any rate add the new state and the Folge to the List
-		
-		for(int i = 0; i < prev.length; i++) {
-			long prevState = prev[i];
-			ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
-			for(int j = 0; j < (this.cols * this.rows); j++) {
-				if(!BitOps.isSet(this.mask, j)) {
-					if(prevFolge.gibtMirAlle().length == depth - 1) {
-						ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
-						long newState = toggleSet(j, prevState);
-						newFolge.ergaenze(j);
-						if(newState == 0) {
-							return newFolge;
+		for(int depth = 2; depth < this.cols * rows; depth++) {
+			for(int i = 0; i < prev.length; i++) {
+				long prevState = prev[i];
+				ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
+				for(int j = 0; j < (this.cols * this.rows); j++) {
+					if(!BitOps.isSet(this.mask, j)) {
+						if(prevFolge.gibtMirAlle().length == depth - 1 && isNotIn(prevFolge.gibtMirAlle(), j)) {
+							System.out.printf("Doing %s + 1\n", prevFolge.gibtMirAlle().length);
+							ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
+							long newState = toggleSet(j, prevState);
+							newFolge.ergaenze(j);
+							if(newState == 0) {
+								return newFolge;
+							}
+							this.merk.merkeDir(newState, newFolge);
 						}
-						this.merk.merkeDir(newState, newFolge);
+	
 					}
-
 				}
+				
 			}
+			System.out.println("Raising Depth to " + (depth + 1));
 		}
 		return this.merk.verrateMirDieSchaltfolgeZum(0);
 	}
