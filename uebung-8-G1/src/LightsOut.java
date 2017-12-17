@@ -1,5 +1,4 @@
 public class LightsOut {
-	private int[][] field;
 	private long state;
 	private long mask;
 	private int rows;
@@ -20,7 +19,6 @@ public class LightsOut {
 		}
 		this.rows = rows;
 		this.cols = cols;
-		this.field = new int[rows][cols];
 		this.state = stateTrim(rows * cols, state);
 		for(int i = 0; i < rows * cols; i++) {
 			if(BitOps.isSet(mask, i)) {
@@ -29,15 +27,7 @@ public class LightsOut {
 			} 
 		}
 		this.mask = mask;
-		
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < cols; j++) {
-				int bit = (int) (this.state >> (i + j) & 1);
-				field[i][j] = bit;
-			}
-		}
-		
-		
+	
 		this.current = this.state;
 		this.merk = getInitialToggles(this.current);
 
@@ -83,13 +73,8 @@ public class LightsOut {
 
 	}
 	
-	public long toggleSet(int s, long set) {
+	private long toggleSet(int s, long set) {
 		long newSet = set;
-		int col = s % this.cols;
-		int row = s / this.cols;
-		if(col >= this.cols || row >= this.rows || col < 0 || row < 0) {
-			throw new IllegalArgumentException("Cannot Toggle Outisde of the field");
-		}
 		if(!BitOps.isSet(this.mask, s)) {
 			int right = s + 1;
 			int left = s - 1;
@@ -121,7 +106,7 @@ public class LightsOut {
 
 	}
 	
-	public MerkerFuerLightsOutLoesungsVersuche getInitialToggles(long start) {
+	private MerkerFuerLightsOutLoesungsVersuche getInitialToggles(long start) {
 		MerkerFuerLightsOutLoesungsVersuche merker = new MerkerFuerLightsOutLoesungsVersuche();
 		ZahlenFolgenMerker z;
 		for(int i = 0; i < ((this.rows * this.cols)); i++) {
@@ -139,20 +124,14 @@ public class LightsOut {
 	}
 	
 	
-	private boolean isNotIn(Integer[] a, int index) {
-		boolean result = true;
-		for(int i = 0; i < a.length; i++) {
-			if(a[i] == index) {
-				return false;
-			}
-		}
-		return result;
-	}
+	
 	
 	public ZahlenFolgenMerker solve() {
 		
 		if(this.merk.verrateMirDieSchaltfolgeZum(0) != null) {
 			return this.merk.verrateMirDieSchaltfolgeZum(0);
+		} else if(this.state == 0) {
+			return new ZahlenFolgenMerker();
 		}
 
 		for(int depth = 2; depth < this.cols * rows; depth++) {
@@ -162,7 +141,7 @@ public class LightsOut {
 				ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
 				for(int j = 0; j < (this.cols * this.rows); j++) {
 					if(!BitOps.isSet(this.mask, j) && BitOps.isSet(prevState, j) && this.merk.verrateMirDieSchaltfolgeZum(toggleSet(j, prevState)) == null) {
-						if(prevFolge.gibtMirAlle().length == (depth - 1) && isNotIn(prevFolge.gibtMirAlle(), j)) {
+						if(prevFolge.gibtMirAlle().length == (depth - 1)) {
 							ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
 							long newState = toggleSet(j, prevState);
 							newFolge.ergaenze(j);
