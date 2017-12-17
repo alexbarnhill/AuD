@@ -15,7 +15,7 @@ public class LightsOut {
 	}
 	
 	public LightsOut(int cols, int rows, long state, long mask) {
-		if(rows <= 0 || cols <= 0) {
+		if(rows <= 0 || cols <= 0 || (rows * cols > 64)) {
 			throw new IllegalArgumentException();
 		}
 		this.rows = rows;

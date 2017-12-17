@@ -104,6 +104,13 @@ public class LightsOutPublicTest {
 		long mask = 0b0_______________010;
 		new LightsOut(42, 0, state, mask);
 	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__cons__withException_tooBig() {
+		long state = 0b0_111111111111_111;
+		long mask = 0b0_______________010;
+		new LightsOut(42, 23, state, mask);
+	}
 
 	@Test(timeout = 666)
 	public void pubTest__toggle() {
