@@ -4,17 +4,16 @@ public class LightsOut {
 	private long mask;
 	private int rows;
 	private int cols;
-	private long solved;
 	private long current;
-//	private int depth = 2;
-	private ZahlenFolgenMerker zf;
 	private MerkerFuerLightsOutLoesungsVersuche merk;
-	private ZahlenMerker zm;
+
 	
 	private long stateTrim(long bits, long state) {
-		long mask = (1L << bits) - 1;
-		return state & mask;
+		long bitMask;
+		bitMask = ((1L << bits) - (bits >> 6)) - 1L;
+		return state & bitMask;
 	}
+	
 	public LightsOut(int cols, int rows, long state, long mask) {
 		if(rows <= 0 || cols <= 0) {
 			throw new IllegalArgumentException();
@@ -23,14 +22,11 @@ public class LightsOut {
 		this.cols = cols;
 		this.field = new int[rows][cols];
 		this.state = stateTrim(rows * cols, state);
-		this.solved = state;
 		for(int i = 0; i < rows * cols; i++) {
 			if(BitOps.isSet(mask, i)) {
 				this.state = BitOps.clear(this.state, i);
-				this.solved = BitOps.clear(this.solved, i);
-			} else {
-				this.solved = BitOps.set(this.solved, i);
-			}
+
+			} 
 		}
 		this.mask = mask;
 		
@@ -43,9 +39,7 @@ public class LightsOut {
 		
 		
 		this.current = this.state;
-		this.zf = new ZahlenFolgenMerker();
 		this.merk = getInitialToggles(this.current);
-		this.zm = new ZahlenMerker();
 
 	}
 	
@@ -173,7 +167,7 @@ public class LightsOut {
 				long prevState = prev[i];
 				ZahlenFolgenMerker prevFolge = this.merk.verrateMirDieSchaltfolgeZum(prevState);
 				for(int j = 0; j < (this.cols * this.rows); j++) {
-					if(!BitOps.isSet(this.mask, j)) {
+					if(!BitOps.isSet(this.mask, j) && BitOps.isSet(prevState, j) && this.merk.verrateMirDieSchaltfolgeZum(toggleSet(j, prevState)) == null) {
 						if(prevFolge.gibtMirAlle().length == (depth - 1) && isNotIn(prevFolge.gibtMirAlle(), j)) {
 							ZahlenFolgenMerker newFolge = prevFolge.machMirEineKopieDavon();
 							long newState = toggleSet(j, prevState);
@@ -183,7 +177,6 @@ public class LightsOut {
 							}
 							this.merk.merkeDir(newState, newFolge);
 						}
-	
 					}
 				}
 				

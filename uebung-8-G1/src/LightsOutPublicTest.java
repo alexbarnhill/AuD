@@ -283,7 +283,7 @@ public class LightsOutPublicTest {
 		}
 	}
 
-	@Test(timeout = 4666)
+	@Test(timeout = 6666)
 	public void pubTest__solve__8xY_games__21_or_29_masks__up_to_3_x_toggle_req() {
 		long[][] states = { //
 				{ 3L << 0, 1L }, //
