@@ -138,12 +138,6 @@ public class LightsOut {
 		return merker;
 	}
 	
-	private void printIntegerArray(Integer[] a) {
-		for(int i = 0; i < a.length; i++) {
-			System.out.printf("%s ", a[i]);
-		}
-		System.out.println();
-	}
 	
 	private boolean isNotIn(Integer[] a, int index) {
 		boolean result = true;
@@ -182,7 +176,7 @@ public class LightsOut {
 				
 			}
 		}
-		return this.merk.verrateMirDieSchaltfolgeZum(0);
+		return new ZahlenFolgenMerker();
 	}
 	
 }
