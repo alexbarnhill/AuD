@@ -106,6 +106,20 @@ public class LightsOutPublicTest {
 	}
 	
 	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__cons__withException_2() {
+		long state = 0b0_111111111111_111;
+		long mask = 0b0_______________010;
+		new LightsOut(0, 5, state, mask);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__cons__withException_3() {
+		long state = 0b0_111111111111_111;
+		long mask = 0b0_______________010;
+		new LightsOut(0, -5, state, mask);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
 	public void pubTest__cons__withException_tooBig() {
 		long state = 0b0_111111111111_111;
 		long mask = 0b0_______________010;
@@ -200,6 +214,66 @@ public class LightsOutPublicTest {
 		long mask = 0b0___________00000_11101_00000_00001_11010;
 		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
 		lightsOut.toggle(-1, 4);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException4() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(4, -1);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException5() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(-1, -1);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException6() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(6, 6);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException7() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(5, 6);
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException8() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(5, 5);
+	}
+	
+	@Test(timeout = 666)
+	public void pubTest__toggle5() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11011;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		long preToggle = lightsOut.getState();
+		lightsOut.toggle(0, 0);
+		long postToggle = lightsOut.getState();
+		assertEquals("state must be cleaned by the cons but immutable during solve.", preToggle, postToggle);
+		
+	}
+	
+	@Test(timeout = 666, expected = IllegalArgumentException.class)
+	public void pubTest__toggle__withException9() {
+		long state = 0b0__________00100_10111_11000_01110_00010;
+		long mask = 0b0___________00000_11101_00000_00001_11010;
+		LightsOut lightsOut = new LightsOut(5, 5, state, mask);
+		lightsOut.toggle(4, 5);
 	}
 
 	@Test
