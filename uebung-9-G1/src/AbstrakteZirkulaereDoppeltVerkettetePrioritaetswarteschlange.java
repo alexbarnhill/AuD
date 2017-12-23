@@ -61,7 +61,7 @@ public abstract class AbstrakteZirkulaereDoppeltVerkettetePrioritaetswarteschlan
 		if (kopf != null) {
 			DoppeltVerketteterKnoten<WertTyp> laufzeiger = kopf;
 			do {
-				zeichenkette += " " + laufzeiger.holeWert() + " >";
+				zeichenkette += " (" + laufzeiger.holeVorgaenger().holeWert() + ") " + laufzeiger.holeWert() + " (" + laufzeiger.holeNachfolger().holeWert() + ") "+ "  >>  ";
 				laufzeiger = laufzeiger.holeNachfolger();
 			} while (laufzeiger != kopf);
 		}
