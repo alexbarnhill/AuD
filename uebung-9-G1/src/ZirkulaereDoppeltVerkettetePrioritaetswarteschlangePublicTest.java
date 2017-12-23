@@ -596,4 +596,32 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlangePublicTest {
 		assertEquals("Failed.", "John", zdvpws.unwichtigstenEntfernen(COMP_STRING_LEX));
 		assertNull("List should be empty", zdvpws.kopf);
 	}
+	
+	@Test(timeout = 666, expected = NoSuchElementException.class)
+	public void pubTest_unwichtigstenEntfernenComparatorOfWertTyp_8() {
+		ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<String> zdvpws = new ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<>(
+				COMP_STRING_LEX);
+		zdvpws.unwichtigstenEntfernen(COMP_STRING_LEX);
+	}
+	
+	@Test(timeout = 666, expected = NoSuchElementException.class)
+	public void pubTest_wichtigstenEntfernenComparatorOfWertTyp_12() {
+		ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<String> zdvpws = new ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<>(
+				COMP_STRING_LEX);
+		zdvpws.wichtigstenEntfernen(COMP_STRING_LEX);
+	}
+	
+	@Test(timeout = 666, expected = NoSuchElementException.class)
+	public void pubTest_wichtigstenEntfernen_6() {
+		ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<String> zdvpws = new ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<>(
+				COMP_STRING_LEX);
+		zdvpws.wichtigstenEntfernen();
+	}
+	
+	@Test(timeout = 666, expected = NoSuchElementException.class)
+	public void pubTest_unwichtigstenEntfernen_9() {
+		ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<String> zdvpws = new ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<>(
+				COMP_STRING_LEX);
+		zdvpws.unwichtigstenEntfernen();
+	}
 }

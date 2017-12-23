@@ -34,7 +34,7 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<WertTyp>
 			
 			else {
 				DoppeltVerketteterKnoten<WertTyp> start = kopf;
-				while(start.holeNachfolger() != null && start.holeNachfolger() != kopf) {
+				while(start.holeNachfolger() != kopf) {
 					if(vergleicher.compare(el.holeWert(), start.holeWert()) <= -1 && vergleicher.compare(el.holeWert(), start.holeNachfolger().holeWert()) >= 1) {
 						DoppeltVerketteterKnoten<WertTyp> suc = start.holeNachfolger();
 						el.ersetzeVorgaenger(start);
@@ -105,12 +105,10 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<WertTyp>
 		
 		DoppeltVerketteterKnoten<WertTyp> el = kopf;
 		DoppeltVerketteterKnoten<WertTyp> start = kopf;
-		while(start.holeNachfolger() != null && start.holeNachfolger() != kopf) {
+		while(start.holeNachfolger() != kopf) {
 			if(andererVergleicher.compare(start.holeNachfolger().holeWert(), el.holeWert()) >= 0) {
 				el = start.holeNachfolger();
-			} else if (andererVergleicher.compare(el.holeWert(), start.holeNachfolger().holeWert()) <= -1){
-				el = start.holeNachfolger();
-			}
+			} 
 			
 			start = start.holeNachfolger();
 		}
@@ -131,7 +129,7 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<WertTyp>
 		
 		
 		
-		return el == null ? null : el.holeWert();
+		return el.holeWert();
 	}
 
 	@Override
@@ -142,7 +140,7 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<WertTyp>
 		DoppeltVerketteterKnoten<WertTyp> el = kopf;
 		DoppeltVerketteterKnoten<WertTyp> start = kopf;
 		
-		while(start.holeNachfolger() != null && start.holeNachfolger() != kopf) {
+		while(start.holeNachfolger() != kopf) {
 			if(andererVergleicher.compare(start.holeNachfolger().holeWert(), el.holeWert()) <= 0) {
 				el = start.holeNachfolger();
 			}
@@ -162,7 +160,7 @@ public class ZirkulaereDoppeltVerkettetePrioritaetswarteschlange<WertTyp>
 			suc.ersetzeVorgaenger(prec);
 		}
 		
-		return el == null ? null : el.holeWert();
+		return el.holeWert();
 	}
 
 }
