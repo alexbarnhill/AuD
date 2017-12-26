@@ -20,7 +20,9 @@ public class IntPublicTest {
 	private static final Nat n15 = Nat.mul(three, five);
 	private static final Nat n42 = Nat.add(Nat.mul(four, ten), two);
 	private static final Nat n47 = Nat.add(Nat.mul(four, ten), seven);
+	private static final Nat n36 = Nat.mul(six, six);
 	private static final Nat n58 = Nat.add(Nat.mul(five, ten), eight);
+	private static final Nat n94 = Nat.add(n47, n47);
 	private static final Nat n517 = Nat.add(Nat.mul(Nat.add(Nat.mul(five, ten), one), ten), seven);
 	private static final Nat n666 = Nat.add(Nat.mul(Nat.add(Nat.mul(six, ten), six), ten), six);
 
@@ -96,8 +98,15 @@ public class IntPublicTest {
 		assertSame("You failed: -(42) == (*-*42)", Sign.minus(), Int.sign(actual));
 		IntPublicTest.assertSameNat("You failed: -(42) == (-*42*)", n42, Int.nat(actual));
 	}
-
+	
 	@Test(timeout = 666)
+	public void pubTest_uminus_2() {
+		Int actual = Int.uminus(Int.nat2int(Sign.minus(), n42));
+		assertSame("You failed: +(42) == (*+*42)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: +(42) == (+*42*)", n42, Int.nat(actual));
+	}
+
+	@Test
 	public void pubTest_add() {
 		Int minus47 = Int.nat2int(Sign.minus(), n47);
 		Int minus11 = Int.nat2int(Sign.minus(), n11);
@@ -105,8 +114,44 @@ public class IntPublicTest {
 		assertSame("You failed: (-47)+(-11) == (*-*58)", Sign.minus(), Int.sign(actual));
 		IntPublicTest.assertSameNat("You failed: (-47)+(-11) == (-*58*)", n58, Int.nat(actual));
 	}
+	
+	@Test
+	public void pubTest_add_2() {
+		Int minus47 = Int.nat2int(Sign.minus(), n47);
+		Int minus11 = Int.nat2int(Sign.plus(), n11);
+		Int actual = Int.add(minus47, minus11);
+		assertSame("You failed: (-47)+(11) == (*-*36)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-47)+(11) == (*58*)", n36, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_add_3() {
+		Int minus47 = Int.nat2int(Sign.minus(), n47);
+		Int minus11 = Int.nat2int(Sign.plus(), n47);
+		Int actual = Int.add(minus47, minus11);
+		assertSame("You failed: (-47)+(47) == (*+*0)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-47)+(47) == (*0*)", zero, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_add_4() {
+		Int minus47 = Int.nat2int(Sign.plus(), n47);
+		Int minus11 = Int.nat2int(Sign.plus(), n47);
+		Int actual = Int.add(minus47, minus11);
+		assertSame("You failed: (47)+(47) == (*+*94)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (47)+(47) == (*94*)", n94, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_add_5() {
+		Int minus47 = Int.nat2int(Sign.plus(), n11);
+		Int minus11 = Int.nat2int(Sign.minus(), n47);
+		Int actual = Int.add(minus47, minus11);
+		assertSame("You failed: (11)+(-47) == (*-*36)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (11)+(-47) == (*-36*)", n36, Int.nat(actual));
+	}
 
-	@Test(timeout = 666)
+	@Test
 	public void pubTest_sub() {
 		Int minus47 = Int.nat2int(Sign.minus(), n47);
 		Int plus11 = Int.nat2int(Sign.plus(), n11);
@@ -114,23 +159,149 @@ public class IntPublicTest {
 		assertSame("You failed: (-47)-(+11) == (*-*58)", Sign.minus(), Int.sign(actual));
 		IntPublicTest.assertSameNat("You failed: (-47)-(+11) == (-*58*)", n58, Int.nat(actual));
 	}
+	
+	@Test
+	public void pubTest_sub_2() {
+		Int minus47 = Int.nat2int(Sign.minus(), n47);
+		Int plus11 = Int.nat2int(Sign.minus(), n11);
+		Int actual = Int.sub(minus47, plus11);
+		assertSame("You failed: (-47)-(-11) == (*-*36)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-47)-(-11) == (-*36*)", n36, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_sub_3() {
+		Int minus47 = Int.nat2int(Sign.plus(), n47);
+		Int plus11 = Int.nat2int(Sign.minus(), n11);
+		Int actual = Int.sub(minus47, plus11);
+		assertSame("You failed: (47)-(-11) == (*+*58)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (47)-(-11) == (-*58*)", n58, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_sub_4() {
+		Int minus47 = Int.nat2int(Sign.plus(), n47);
+		Int plus11 = Int.nat2int(Sign.plus(), n11);
+		Int actual = Int.sub(minus47, plus11);
+		assertSame("You failed: (47)-(11) == (*+*36)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (47)-(11) == (+*36*)", n36, Int.nat(actual));
+	}
 
-	@Test(timeout = 666)
+	@Test
 	public void pubTest_mul() {
 		Int minus47 = Int.nat2int(Sign.minus(), n47);
 		Int minus11 = Int.nat2int(Sign.minus(), n11);
 		Int actual = Int.mul(minus47, minus11);
-		assertSame("You failed: (-47)*(-11) == (*+*58)", Sign.plus(), Int.sign(actual));
-		IntPublicTest.assertSameNat("You failed: (-47)*(-11) == (+*58*)", n517, Int.nat(actual));
+		assertSame("You failed: (-47)*(-11) == (*+*517)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-47)*(-11) == (+*517*)", n517, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_mul_2() {
+		Int minus47 = Int.nat2int(Sign.plus(), n47);
+		Int minus11 = Int.nat2int(Sign.minus(), n11);
+		Int actual = Int.mul(minus47, minus11);
+		assertSame("You failed: (47)*(-11) == (*-*517)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (47)*(-11) == (-*517*)", n517, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_mul_3() {
+		Int minus47 = Int.nat2int(Sign.minus(), n47);
+		Int minus11 = Int.nat2int(Sign.plus(), n11);
+		Int actual = Int.mul(minus47, minus11);
+		assertSame("You failed: (-47)*(11) == (*-*517)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-47)*(11) == (-*517*)", n517, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_mul_4() {
+		Int minus47 = Int.nat2int(Sign.plus(), n47);
+		Int minus11 = Int.nat2int(Sign.plus(), n11);
+		Int actual = Int.mul(minus47, minus11);
+		assertSame("You failed: (47)*(11) == (*+*517)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (47)*(11) == (+*517*)", n517, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_mul_5() {
+		Int minus47 = Int.nat2int(Sign.plus(), zero);
+		Int minus11 = Int.nat2int(Sign.plus(), n11);
+		Int actual = Int.mul(minus47, minus11);
+		assertSame("You failed: (0)*(11) == (*+*0)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (0)*(11) == (+*0*)", zero, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_mul_6() {
+		Int minus47 = Int.nat2int(Sign.plus(), n11);
+		Int minus11 = Int.nat2int(Sign.plus(), zero);
+		Int actual = Int.mul(minus47, minus11);
+		assertSame("You failed: (11)*(0) == (*+*0)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (11)*(0) == (+*0*)", zero, Int.nat(actual));
 	}
 
-	@Test(timeout = 666)
+	@Test
 	public void pubTest_div() {
 		Int plus666 = Int.nat2int(Sign.plus(), n666);
 		Int minus42 = Int.nat2int(Sign.minus(), n42);
 		Int actual = Int.div(plus666, minus42);
 		assertSame("You failed: (+666)/(-42) == (*-*15)", Sign.minus(), Int.sign(actual));
 		IntPublicTest.assertSameNat("You failed: (+666)/(-42) == (-*15*)", n15, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_2() {
+		Int plus666 = Int.nat2int(Sign.plus(), n666);
+		Int minus42 = Int.nat2int(Sign.plus(), n42);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (+666)/(42) == (*+*15)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (+666)/(+42) == (+*15*)", n15, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_3() {
+		Int plus666 = Int.nat2int(Sign.minus(), n666);
+		Int minus42 = Int.nat2int(Sign.minus(), n42);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (-666)/(-42) == (*+*15)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-666)/(-42) == (+*15*)", n15, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_4() {
+		Int plus666 = Int.nat2int(Sign.minus(), n666);
+		Int minus42 = Int.nat2int(Sign.plus(), n42);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (-666)/(+42) == (*-*15)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (+666)/(-42) == (-*15*)", n15, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_5() {
+		Int plus666 = Int.nat2int(Sign.minus(), five);
+		Int minus42 = Int.nat2int(Sign.plus(), three);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (-5)/(+3) == (*-*1)", Sign.minus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-5)/(3) == (-*1*)", one, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_6() {
+		Int plus666 = Int.nat2int(Sign.minus(), five);
+		Int minus42 = Int.nat2int(Sign.plus(), zero);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (-5)/(+0) == (*+*0)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (-5)/(0) == (+*0*)", zero, Int.nat(actual));
+	}
+	
+	@Test
+	public void pubTest_div_7() {
+		Int plus666 = Int.nat2int(Sign.plus(), zero);
+		Int minus42 = Int.nat2int(Sign.minus(), five);
+		Int actual = Int.div(plus666, minus42);
+		assertSame("You failed: (0)/(-5) == (*+*0)", Sign.plus(), Int.sign(actual));
+		IntPublicTest.assertSameNat("You failed: (0)/(-5) == (+*0*)", zero, Int.nat(actual));
 	}
 
 	protected static final void assertSameNat(String message, Nat expected, Nat actual) {
