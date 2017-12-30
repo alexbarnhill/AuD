@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/uebung-1/uebung-1.iml" filepath="$PROJECT_DIR$/uebung-1/uebung-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-2-E/uebung-2-E1.iml" filepath="$PROJECT_DIR$/uebung-2-E/uebung-2-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-2-E2/uebung-2-E2.iml" filepath="$PROJECT_DIR$/uebung-2-E2/uebung-2-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-2-G/uebung-2-G.iml" filepath="$PROJECT_DIR$/uebung-2-G/uebung-2-G.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-3-E1/uebung-3-E1.iml" filepath="$PROJECT_DIR$/uebung-3-E1/uebung-3-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-3-E2/uebung-3-E2.iml" filepath="$PROJECT_DIR$/uebung-3-E2/uebung-3-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-3-E3/uebung-3-E3.iml" filepath="$PROJECT_DIR$/uebung-3-E3/uebung-3-E3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-3-G1/uebung-3-G1.iml" filepath="$PROJECT_DIR$/uebung-3-G1/uebung-3-G1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-3-G2/uebung-3-G2.iml" filepath="$PROJECT_DIR$/uebung-3-G2/uebung-3-G2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-4-E1/uebung-4-E1.iml" filepath="$PROJECT_DIR$/uebung-4-E1/uebung-4-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-4-E2/uebung-4-E2.iml" filepath="$PROJECT_DIR$/uebung-4-E2/uebung-4-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-4-G2/uebung-4-G2.iml" filepath="$PROJECT_DIR$/uebung-4-G2/uebung-4-G2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-5-E1/uebung-5-E1.iml" filepath="$PROJECT_DIR$/uebung-5-E1/uebung-5-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-5-G1/uebung-5-G1.iml" filepath="$PROJECT_DIR$/uebung-5-G1/uebung-5-G1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-5-G2/uebung-5-G2.iml" filepath="$PROJECT_DIR$/uebung-5-G2/uebung-5-G2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-6-E1/uebung-6-E1.iml" filepath="$PROJECT_DIR$/uebung-6-E1/uebung-6-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-6-E2/uebung-6-E2.iml" filepath="$PROJECT_DIR$/uebung-6-E2/uebung-6-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-6-G3/uebung-6-G3.iml" filepath="$PROJECT_DIR$/uebung-6-G3/uebung-6-G3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-7-E1/uebung-7-E1.iml" filepath="$PROJECT_DIR$/uebung-7-E1/uebung-7-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-7-E2/uebung-7-E2.iml" filepath="$PROJECT_DIR$/uebung-7-E2/uebung-7-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-7-G1/uebung-7-G1.iml" filepath="$PROJECT_DIR$/uebung-7-G1/uebung-7-G1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-7-G2/uebung-7-G2.iml" filepath="$PROJECT_DIR$/uebung-7-G2/uebung-7-G2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-8-E1/uebung-8-E1.iml" filepath="$PROJECT_DIR$/uebung-8-E1/uebung-8-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-8-E2/uebung-8-E2.iml" filepath="$PROJECT_DIR$/uebung-8-E2/uebung-8-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-8-G1/uebung-8-G1.iml" filepath="$PROJECT_DIR$/uebung-8-G1/uebung-8-G1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-9-E1/uebung-9-E1.iml" filepath="$PROJECT_DIR$/uebung-9-E1/uebung-9-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-9-G1/uebung-9-G1.iml" filepath="$PROJECT_DIR$/uebung-9-G1/uebung-9-G1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-BONUS-E1/uebung-BONUS-E1.iml" filepath="$PROJECT_DIR$/uebung-BONUS-E1/uebung-BONUS-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-BONUS-E2/uebung-BONUS-E2.iml" filepath="$PROJECT_DIR$/uebung-BONUS-E2/uebung-BONUS-E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-BONUS-E3/uebung-BONUS-E3.iml" filepath="$PROJECT_DIR$/uebung-BONUS-E3/uebung-BONUS-E3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-BONUS-E4/uebung-BONUS-E4.iml" filepath="$PROJECT_DIR$/uebung-BONUS-E4/uebung-BONUS-E4.iml" />
+    </modules>
+  </component>
+</project>

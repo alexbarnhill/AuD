@@ -46,7 +46,7 @@ public class DPLLSolverPublicTest {
 	}
 
 	// ============================== PUBLIC TEST ==============================
-	@Test(timeout = 1000)
+	@Test
 	public void pubTest__propagateUnitClauses__simple() {
 		// (v0) & (v1 | !v2) & (!v1 | v2) ==> (v1 | !v2) & (!v1 | v2)
 		final List<List<Literal>> formula = new LinkedList<>();
@@ -66,7 +66,7 @@ public class DPLLSolverPublicTest {
 		assertTrue(DPLLSolverPublicTest.EX_NAME_propagateUnitClauses + " on \"" + formulaString + "\" assigned wrong value", assignments.get(0));
 	}
 
-	@Test(timeout = 1000)
+	@Test
 	public void pubTest__propagateUnitClauses__exampleFromExerciseSheet() {
 		// (v0) & (!v0 | v1 | !v2) & (v0 | !v1) & (!v1 | v2) ==> (v1 | !v2) & (!v1 | v2)
 		final List<List<Literal>> formula = new LinkedList<>();
@@ -87,10 +87,12 @@ public class DPLLSolverPublicTest {
 		assertTrue(DPLLSolverPublicTest.EX_NAME_propagateUnitClauses + " on \"" + formulaString + "\" assigned wrong value", assignments.get(0));
 		assertEquals(DPLLSolverPublicTest.EX_NAME_propagateUnitClauses + " on \"" + formulaString + "\" should not call other methods from super-class", 0, solver.assignPureLiteralsCallCounter + solver.chooseVariableCallCounter + solver.solveCallCounter);
 	}
+	
+	
 
 	// ----------------------------------------------------------------------
 
-	@Test(timeout = 1000)
+	@Test
 	public void pubTest__assignPureLiterals() {
 		// (!v0 | v1) & (!v1 | !v2) & (v1 | v2)
 		final List<List<Literal>> formula = new LinkedList<>();
@@ -119,7 +121,7 @@ public class DPLLSolverPublicTest {
 
 	// ----------------------------------------------------------------------
 
-	@Test(timeout = 1000)
+	@Test
 	public void pubTest__solve__exampleFromExerciseSheet() {
 		// (v0 | !v2) & (!v0 | !v1) & (!v0 | v2) & (v1 | v2)
 		final List<List<Literal>> formula = new LinkedList<>();
@@ -142,6 +144,25 @@ public class DPLLSolverPublicTest {
 			assertTrue("Assignment for variable 1 is wrong", assignments.get(1));
 			assertFalse("Assignment for variable 2 is wrong", assignments.get(2));
 		}
+	}
+
+	@Test
+	public void pubTest__solve__2() {
+		// (!v0 | !v1) & (v0 | !v1) & (!v1| v2) & (v0 | !v2)
+		final List<List<Literal>> formula = new LinkedList<>();
+		formula.add(mkClause(new Literal(0, true), new Literal(1, true)));
+		formula.add(mkClause(new Literal(0, false), new Literal(1, true)));
+		formula.add(mkClause(new Literal(1, true), new Literal(2, false)));
+		formula.add(mkClause(new Literal(0, false), new Literal(2, true)));
+		String formulaString = formulaToString(formula);
+		final Map<Integer, Boolean> assignments = new HashMap<>();
+		final DPLLSolver solver = new DPLLSolver(3);
+		boolean isSatisfiable = solver.solve(formula, assignments);
+		assertTrue(DPLLSolverPublicTest.EX_NAME_solve + " on \"" + formulaString + "\" returned wrong result", isSatisfiable);
+		assertTrue("No assignment for variable 0 found", assignments.containsKey(0));
+		assertTrue("No assignment for variable 1 found", assignments.containsKey(1));
+		assertTrue("No assignment for variable 2 found", assignments.containsKey(2));
+
 	}
 
 	// ========== HELPER ==========
