@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/uebung-1/uebung-1.iml" filepath="$PROJECT_DIR$/uebung-1/uebung-1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/uebung-2-E/uebung-2-E1.iml" filepath="$PROJECT_DIR$/uebung-2-E/uebung-2-E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uebung-2-E/uebung-2-E.iml" filepath="$PROJECT_DIR$/uebung-2-E/uebung-2-E.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-2-E2/uebung-2-E2.iml" filepath="$PROJECT_DIR$/uebung-2-E2/uebung-2-E2.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-2-G/uebung-2-G.iml" filepath="$PROJECT_DIR$/uebung-2-G/uebung-2-G.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-3-E1/uebung-3-E1.iml" filepath="$PROJECT_DIR$/uebung-3-E1/uebung-3-E1.iml" />
@@ -17,6 +17,7 @@
       <module fileurl="file://$PROJECT_DIR$/uebung-5-E1/uebung-5-E1.iml" filepath="$PROJECT_DIR$/uebung-5-E1/uebung-5-E1.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-5-G1/uebung-5-G1.iml" filepath="$PROJECT_DIR$/uebung-5-G1/uebung-5-G1.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-5-G2/uebung-5-G2.iml" filepath="$PROJECT_DIR$/uebung-5-G2/uebung-5-G2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/audworkspace/uebung-5-G2/uebung-5-G21.iml" filepath="$PROJECT_DIR$/audworkspace/uebung-5-G2/uebung-5-G21.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-6-E1/uebung-6-E1.iml" filepath="$PROJECT_DIR$/uebung-6-E1/uebung-6-E1.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-6-E2/uebung-6-E2.iml" filepath="$PROJECT_DIR$/uebung-6-E2/uebung-6-E2.iml" />
       <module fileurl="file://$PROJECT_DIR$/uebung-6-G3/uebung-6-G3.iml" filepath="$PROJECT_DIR$/uebung-6-G3/uebung-6-G3.iml" />
