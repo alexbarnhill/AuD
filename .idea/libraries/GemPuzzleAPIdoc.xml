@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="GemPuzzleAPIdoc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/uebung-BONUS-E2/ApiDoc/GemPuzzleAPIdoc/member-search-index.zip!/" />
+      <root url="jar://$PROJECT_DIR$/uebung-BONUS-E2/ApiDoc/GemPuzzleAPIdoc/type-search-index.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

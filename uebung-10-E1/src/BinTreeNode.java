@@ -66,7 +66,17 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
 
     @Override
     protected AbstractBinTreeNode findNode(Comparable value) {
-        return null;
+        if (value.compareTo(this.value) == 0) {
+            return this;
+            // If the value is smaller
+        } else if (value.compareTo(this.value) < 0) {
+
+
+        } else {
+
+        }
+
+        return this;
     }
 
     @Override
@@ -97,13 +107,13 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
         AbstractBinTreeNode root = this.getTreeRoot();
         AbstractBinTreeNode l = root.left;
         if(root != null && l != null) {
-            while(l != null) {
+            while(l.left != null) {
                 l = l.left;
             }
         }
 
 
-        return l;
+        return l == null ? this : l;
     }
 
     @Override
@@ -111,13 +121,13 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
         AbstractBinTreeNode root = this.getTreeRoot();
         AbstractBinTreeNode r = root.right;
         if(root != null && r != null) {
-            while(r != null) {
-                r = r.left;
+            while(r.right != null) {
+                r = r.right;
             }
         }
 
 
-        return r;
+        return r == null ? this : r;
     }
 
     @Override
@@ -146,7 +156,6 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
         while(p != null) {
             p = p.parent;
         }
-        System.out.println(root.value.toString());
         return p == null ? this : p;
     }
 }

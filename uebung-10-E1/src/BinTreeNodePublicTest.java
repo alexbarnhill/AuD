@@ -250,7 +250,7 @@ public class BinTreeNodePublicTest {
     }
 
     // -------------------- findNode/contains --------------------
-    @Test(timeout = 666)
+    @Test
     public void pubTest__findNode() {
         for (int pass = 0; pass < 42; pass++) {
             String llRnd, lRnd, lrRnd, nRnd, rRnd, rrRnd;
