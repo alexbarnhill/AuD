@@ -179,7 +179,9 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
 
     @Override
     public AbstractBinTreeNode deleteNode() {
-
+        if(this.right == null && this.left == null && this.parent == null) {
+            return null;
+        }
         // Simplest situation -- Node is a leaf;
         if(this.right == null && this.left == null) {
             if(this.isLeftChild()) {
@@ -193,13 +195,27 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
         // Lets go right
         if(this.right != null) {
             AbstractBinTreeNode min = this.right.getMinNode();
-            min.parent = null;
-            this.right.parent = min;
-            if(this.left != null) {
-                this.left.parent = min;
-            }
+            if(min == this.right) {
+                if(this.left != null ) {
+                    this.left.parent = min;
+                }
+                if(this.parent != null) {
+                    this.parent.right = min;
+                }
 
-            return min;
+            } else {
+                this.right.parent = min;
+                if(this.parent != null) {
+                    min.parent = this.parent;
+                } else {
+                    min.parent = null;
+                }
+                if(this.left != null) {
+                    this.left.parent = min;
+                }
+            }
+        } else {
+            System.out.println();
         }
 
         return this;
