@@ -1,26 +1,23 @@
 import java.util.LinkedList;
 
-public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTreeNode {
+public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTreeNode<T> {
 
-    public BinTreeNode(Comparable value) {
+    public BinTreeNode(T value) {
         super(value);
-        super.left = null;
-        super.parent = null;
-        super.right = null;
     }
 
-    public BinTreeNode(Comparable value, AbstractBinTreeNode left, AbstractBinTreeNode right) {
+    public BinTreeNode(T value, AbstractBinTreeNode left, AbstractBinTreeNode right) {
         super(value, left, right);
     }
 
     @Override
-    public void addLeft(Comparable value) {
+    public void addLeft(T value) {
         this.left = new BinTreeNode(value);
         this.left.parent = this;
     }
 
     @Override
-    public void addRight(Comparable value) {
+    public void addRight(T value) {
         this.right = new BinTreeNode(value);
         this.right.parent = this;
     }
@@ -45,7 +42,7 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
     @Override
     public void swap(AbstractBinTreeNode other) {
         Comparable v = this.value;
-        this.value = other.value;
+        this.value = (T) other.value;
         other.value = v;
 
     }
@@ -71,7 +68,7 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
     }
 
     @Override
-    protected AbstractBinTreeNode findNode(Comparable value) {
+    protected AbstractBinTreeNode findNode(T value) {
         if (value.compareTo(this.value) == 0) {
             return this;
         } else if (value.compareTo(this.value) < 0) {
@@ -122,25 +119,25 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
     }
 
     @Override
-    public boolean contains(Comparable value) {
+    public boolean contains(T value) {
         if(this.value.compareTo(value) == 0) {
             return true;
         }
 
         AbstractBinTreeNode a = this.findNode(value);
-        if(value.compareTo(a.value) == 0) {
+        if(value.compareTo((T) a.getValue()) == 0) {
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean insert(Comparable value) {
+    public boolean insert(T value) {
 
         AbstractBinTreeNode a = this.findNode(value);
-        if(value.compareTo(a.value) == 0) {
+        if(value.compareTo((T) a.value) == 0) {
             return false;
-        } else if (value.compareTo(a.value) < 0) {
+        } else if (value.compareTo((T) a.value) < 0) {
             a.addLeft(value);
             return true;
         } else {
@@ -213,7 +210,7 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
     }
 
     @Override
-    public boolean delete(Comparable value) {
+    public boolean delete(T value) {
         AbstractBinTreeNode toDelete = findNode(value);
         if(toDelete.value.compareTo(value) == 0) {
             toDelete.deleteNode();
@@ -226,27 +223,27 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
 
     @Override
     public LinkedList traverse(TreeTraversalOrderType traversalOrder) {
-        LinkedList<Comparable> l = new LinkedList<>();
+        LinkedList<T> l = new LinkedList<>();
         if(traversalOrder == TreeTraversalOrderType.PRE) {
             l.add(this.value);
             if(this.left != null) {
-                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.PRE);
-                for(Comparable item : left) {
+                LinkedList<T> left = this.left.traverse(TreeTraversalOrderType.PRE);
+                for(T item : left) {
                     l.add(item);
                 }
             }
 
             if (this.right != null) {
-                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.PRE);
-                for(Comparable item : right) {
+                LinkedList<T> right = this.right.traverse(TreeTraversalOrderType.PRE);
+                for(T item : right) {
                     l.add(item);
                 }
 
             }
         } else  if (traversalOrder == TreeTraversalOrderType.IN) {
             if(this.left != null) {
-                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.IN);
-                for(Comparable item : left) {
+                LinkedList<T> left = this.left.traverse(TreeTraversalOrderType.IN);
+                for(T item : left) {
                     l.add(item);
                 }
             }
@@ -254,23 +251,23 @@ public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTre
             l.add(this.value);
 
             if(this.right != null) {
-                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.IN);
-                for(Comparable item : right) {
+                LinkedList<T> right = this.right.traverse(TreeTraversalOrderType.IN);
+                for(T item : right) {
                     l.add(item);
                 }
             }
 
         } else {
             if(this.left != null) {
-                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.POST);
-                for(Comparable item : left) {
+                LinkedList<T> left = this.left.traverse(TreeTraversalOrderType.POST);
+                for(T item : left) {
                     l.add(item);
                 }
             }
 
             if(this.right != null) {
-                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.POST);
-                for(Comparable item : right) {
+                LinkedList<T> right = this.right.traverse(TreeTraversalOrderType.POST);
+                for(T item : right) {
                     l.add(item);
                 }
             }
