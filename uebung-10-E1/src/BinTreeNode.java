@@ -1,9 +1,12 @@
 import java.util.LinkedList;
 
-public class BinTreeNode<E> extends AbstractBinTreeNode {
+public class BinTreeNode<T extends Comparable<? super T>> extends AbstractBinTreeNode {
 
     public BinTreeNode(Comparable value) {
         super(value);
+        super.left = null;
+        super.parent = null;
+        super.right = null;
     }
 
     public BinTreeNode(Comparable value, AbstractBinTreeNode left, AbstractBinTreeNode right) {
@@ -71,45 +74,33 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
     protected AbstractBinTreeNode findNode(Comparable value) {
         if (value.compareTo(this.value) == 0) {
             return this;
-            // If the value is smaller
         } else if (value.compareTo(this.value) < 0) {
-            // if it is the left node
             if(this.left != null && value.compareTo(this.left.value) == 0) {
                 return this.left;
             }
-            // if it is the parent node
             if(this.parent != null && value.compareTo(this.parent.value) == 0) {
                 return this.parent;
             }
-            // If there is no parent (at the root)
             if(this.parent == null) {
                 if(this.left != null) {
                     return this.left.findNode(value);
                 } else {
                     return this;
                 }
-                // If there is a parent
             } else {
-                // If the this node is smaller (and the value is smaller than this;
                 if(this.value.compareTo(this.parent.value) < 0) {
                     if(this.left == null) {
                         return this;
                     } else {
                         return this.left.findNode(value);
                     }
-                    // if this node is larger than the parent ( and the value is smaller than this)
                 } else {
-                    // if the value is smaller than the parent
                     if(value.compareTo(this.parent.value) < 0) {
-                        // go up one node
                         return this.parent.findNode(value);
-                        // if it is larger than the parent but still smaller than this
                     } else if (value.compareTo(this.parent.value) > 0) {
-                        // if there is not a left node, return this
                         if(this.left == null) {
                             return this;
                         } else {
-                            // return the left node
                             return this.left.findNode(value);
                         }
                     }
@@ -182,7 +173,6 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
         if(this.right == null && this.left == null && this.parent == null) {
             return null;
         }
-        // Simplest situation -- Node is a leaf;
         if(this.right == null && this.left == null) {
             if(this.isLeftChild()) {
                 this.parent.left = null;
@@ -191,49 +181,132 @@ public class BinTreeNode<E> extends AbstractBinTreeNode {
             }
             return null;
         }
-        // now it gets weird...
-        // Lets go right
+
         if(this.right != null) {
             AbstractBinTreeNode min = this.right.getMinNode();
+            this.swap(min);
             if(min == this.right) {
-                if(this.left != null ) {
-                    this.left.parent = min;
+
+                if(min.right != null) {
+                    min.right.parent = this;
+                    this.right = min.right;
+                } else {
+                    this.right = null;
                 }
-                if(this.parent != null) {
-                    this.parent.right = min;
-                }
+
 
             } else {
-                this.right.parent = min;
-                if(this.parent != null) {
-                    min.parent = this.parent;
-                } else {
-                    min.parent = null;
-                }
-                if(this.left != null) {
-                    this.left.parent = min;
+                if(min.right != null) {
+                    this.right.left = min.right;
+                    min.right.parent = this.right.left;
                 }
             }
+
+            return this;
         } else {
-            System.out.println();
+            this.swap(this.left);
+            this.left.parent = this.parent;
+            this.parent.left = this.left;
+            return this.left;
         }
 
-        return this;
     }
 
     @Override
     public boolean delete(Comparable value) {
+        AbstractBinTreeNode toDelete = findNode(value);
+        if(toDelete.value.compareTo(value) == 0) {
+            toDelete.deleteNode();
+            return true;
+        }
+
         return false;
+
     }
 
     @Override
     public LinkedList traverse(TreeTraversalOrderType traversalOrder) {
-        return null;
+        LinkedList<Comparable> l = new LinkedList<>();
+        if(traversalOrder == TreeTraversalOrderType.PRE) {
+            l.add(this.value);
+            if(this.left != null) {
+                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.PRE);
+                for(Comparable item : left) {
+                    l.add(item);
+                }
+            }
+
+            if (this.right != null) {
+                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.PRE);
+                for(Comparable item : right) {
+                    l.add(item);
+                }
+
+            }
+        } else  if (traversalOrder == TreeTraversalOrderType.IN) {
+            if(this.left != null) {
+                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.IN);
+                for(Comparable item : left) {
+                    l.add(item);
+                }
+            }
+
+            l.add(this.value);
+
+            if(this.right != null) {
+                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.IN);
+                for(Comparable item : right) {
+                    l.add(item);
+                }
+            }
+
+        } else {
+            if(this.left != null) {
+                LinkedList<Comparable> left = this.left.traverse(TreeTraversalOrderType.POST);
+                for(Comparable item : left) {
+                    l.add(item);
+                }
+            }
+
+            if(this.right != null) {
+                LinkedList<Comparable> right = this.right.traverse(TreeTraversalOrderType.POST);
+                for(Comparable item : right) {
+                    l.add(item);
+                }
+            }
+
+            l.add(this.value);
+        }
+
+        return l;
     }
 
     @Override
     public AbstractBinTreeNode nextNode() {
+        if(this.isLeftChild()) {
+            if(this.right == null) {
+                return this.parent;
+            } else {
+                return this.right;
+            }
+
+        }
+
+        if(this.right != null) {
+            return this.right;
+        } else if(this.parent == null) {
+            return null;
+        } else if((this.value.compareTo(this.parent.value) > 0) && this.isRightChild()) {
+            AbstractBinTreeNode p = this.parent;
+            while(p != null && p.value.compareTo(this.value) < 0) {
+                p = p.parent;
+            }
+
+            return p;
+
+        }
         return null;
     }
+
 
 }
