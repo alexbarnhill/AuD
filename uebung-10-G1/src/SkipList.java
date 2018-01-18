@@ -1,9 +1,11 @@
 import java.util.Collection;
 
 public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList {
+    private int size = 0;
+
 
     @Override
-    protected int getRandomLevel() {
+    public int getRandomLevel() {
         int level = 0;
         while(!super.nextBoolean() && level < super.MAX_LEVELS) {
             level++;
@@ -14,14 +16,6 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
     @Override
     public int size() {
-        int size = 0;
-        if(head.next[0] == null) {
-            return size;
-        } else {
-            size = head.level;
-
-        }
-
         return size;
     }
 
@@ -36,27 +30,98 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
     @Override
     public boolean contains(Object o) {
-        Comparable toAdd = (Comparable) o;
-        SkipListNode first = head.next[super.MAX_LEVELS - 1];
+        E toFind = (E) o;
+        SkipListNode el = head.next[MAX_LEVELS - 1];
+        int currentIndex = 0;
+        for(int i = MAX_LEVELS - 1; i >= 0 && currentIndex < size; i--) {
+            el = head.next[i];
+            // Go through the elements in the row
+            for(int j = 0; j < size; j++) {
+                // If the node was found,
+                if(el != null && toFind.compareTo((E) el.value) == 0) {
+                    return true;
+                    // if the searched-for element is larger than the current value
+                } else if(el != null && toFind.compareTo((E) el.value) > 0 ) {
+                    // if the next element exists
+                    if(el.next != null) {
+                        el = el.next[i];
+                        continue;
+                        // if not, go to the next level;
+                    } else {
+                        break;
+                    }
+                }
+            }
 
+        }
+        return false;
     }
 
 
     @Override
     public boolean add(Object o) {
-        Comparable toAdd = (Comparable) o;
+        boolean added = false;
+        E toAdd = (E) o;
         if(contains(o)) {
-            return false;
+            return added;
         }
 
         int maxLevel = getRandomLevel();
-        if(head.next[maxLevel] == null) {
-            SkipListNode skipListNode = new SkipListNode(o, maxLevel);
-            skipListNode.next[maxLevel] = null;
+        // First element in this level
+        SkipListNode el = head.next[maxLevel];
+        // All Levels
+
+
+        // The list is empty
+        if(size() == 0) {
+            for(int i = maxLevel; i >= 0; i--) {
+                SkipListNode newNode = new SkipListNode(toAdd, i);
+                this.head.next[i] = newNode;
+                added = true;
+            }
+        } else {
+            // for each level below / including the max level of the element
+            for(int i = maxLevel; i >= 0; i--) {
+                // for each element in this row
+                for(int j = 0; j <= size; j++) {
+                    // if this level is empty
+                    if(head.next[i] == null) {
+                        SkipListNode newNode = new SkipListNode(toAdd, i);
+                        head.next[i] = newNode;
+                        added = true;
+                        break;
+                    } else {
+                        // get the next element on this level
+                        // If the element to add is larger than the current element
+                        if(toAdd.compareTo((E) el.value) > 0) {
+                            // if there is a next element and it is larger than the element to insert
+                            if(el.next[i] != null && toAdd.compareTo((E) el.next[i].value) < 0) {
+                                SkipListNode newNode = new SkipListNode(toAdd, i);
+                                SkipListNode next = el.next[i];
+                                newNode.next[i] = next;
+                                el.next[i] = newNode;
+                                added = true;
+
+                            } else if(el.next[i] == null) {
+                                SkipListNode newNode = new SkipListNode(toAdd, i);
+                                SkipListNode next = el.next[i];
+                                newNode.next[i] = next;
+                                el.next[i] = newNode;
+                                added = true;
+                                // if there is a next node and it is smaller than the node to add
+                            } else {
+                                break;
+                            }
+
+                        }
+
+
+                    }
+                }
+            }
         }
-
-
-        return true;
+        size++;
+        return added;
     }
 
     @Override
@@ -66,6 +131,7 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
             return false;
         }
 
+        size--;
         return true;
     }
 
@@ -76,7 +142,7 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                 return false;
             }
         }
-
+        size += c.size();
         return true;
     }
 
@@ -95,6 +161,7 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
             }
         }
 
+        size -= c.size();
         return true;
     }
 
