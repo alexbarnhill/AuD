@@ -68,7 +68,7 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
         int maxLevel = getRandomLevel();
         // First element in this level
-        SkipListNode el = head.next[maxLevel];
+        SkipListNode el = null;
         // All Levels
 
 
@@ -82,16 +82,19 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
         } else {
             // for each level below / including the max level of the element
             for(int i = maxLevel; i >= 0; i--) {
+                SkipListNode first = head.next[i];
+
                 // for each element in this row
                 for(int j = 0; j <= size; j++) {
                     // if this level is empty
-                    if(head.next[i] == null) {
+                    if(first == null) {
                         SkipListNode newNode = new SkipListNode(toAdd, i);
                         head.next[i] = newNode;
                         added = true;
                         break;
+                        // if there is at least one element at this level
                     } else {
-                        // get the next element on this level
+                        el = j == 0 ? first : el;
                         // If the element to add is larger than the current element
                         if(toAdd.compareTo((E) el.value) > 0) {
                             // if there is a next element and it is larger than the element to insert
@@ -104,15 +107,22 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
                             } else if(el.next[i] == null) {
                                 SkipListNode newNode = new SkipListNode(toAdd, i);
-                                SkipListNode next = el.next[i];
-                                newNode.next[i] = next;
                                 el.next[i] = newNode;
                                 added = true;
                                 // if there is a next node and it is smaller than the node to add
-                            } else {
-                                break;
+                            } else if(el.next[i] != null){
+                                el = el.next[i];
+                                continue;
                             }
 
+                         // if the element is smaller than the head
+                        } else if(toAdd.compareTo((E) first.value) < 0){
+                            SkipListNode newNode = new SkipListNode(toAdd, i);
+                            newNode.next[i] = el;
+                            head.next[i] = newNode;
+                            added = true;
+                            first = newNode;
+                            break;
                         }
 
 

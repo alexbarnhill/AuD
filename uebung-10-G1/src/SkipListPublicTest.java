@@ -123,7 +123,7 @@ public class SkipListPublicTest {
     }
 
     // -------------------- add [+contains] --------------------
-    @Test(timeout = 666)
+    @Test
     public void pubTest__add() {
         Set<Integer> reference = new TreeSet<>();
         AbstractSkipList<Integer> sl = new SkipList<>();
