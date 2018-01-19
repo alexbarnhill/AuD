@@ -66,6 +66,7 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
             return added;
         }
 
+
         int maxLevel = getRandomLevel();
         // First element in this level
         SkipListNode el = null;
@@ -81,53 +82,72 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
             }
         } else {
             // for each level below / including the max level of the element
-            for(int i = maxLevel; i >= 0; i--) {
+            SkipListNode currentEl = head.next[MAX_LEVELS - 1];
+            for(int i = MAX_LEVELS - 1; i >= 0; i--) {
                 SkipListNode first = head.next[i];
 
-                // for each element in this row
-                for(int j = 0; j <= size; j++) {
-                    // if this level is empty
-                    if(first == null) {
-                        SkipListNode newNode = new SkipListNode(toAdd, i);
-                        head.next[i] = newNode;
-                        added = true;
+                // Checkout the elements at this level
+                for(int j = 0; j < size(); j++) {
+                    // get the first element at this level
+                    // Is this level empty and should it be inserted?
+                    if(first == null && i > maxLevel) {
                         break;
-                        // if there is at least one element at this level
-                    } else {
-                        el = j == 0 ? first : el;
-                        // If the element to add is larger than the current element
-                        if(toAdd.compareTo((E) el.value) > 0) {
-                            // if there is a next element and it is larger than the element to insert
-                            if(el.next[i] != null && toAdd.compareTo((E) el.next[i].value) < 0) {
-                                SkipListNode newNode = new SkipListNode(toAdd, i);
-                                SkipListNode next = el.next[i];
-                                newNode.next[i] = next;
-                                el.next[i] = newNode;
-                                added = true;
 
-                            } else if(el.next[i] == null) {
-                                SkipListNode newNode = new SkipListNode(toAdd, i);
-                                el.next[i] = newNode;
-                                added = true;
-                                // if there is a next node and it is smaller than the node to add
-                            } else if(el.next[i] != null){
-                                el = el.next[i];
+                        //Else if this level isn't empty
+                    } else if (first != null) {
+
+
+                        // Is the currentNode node to insert smaller?
+                        if(toAdd.compareTo((E) currentEl.value) < 0 && i <= maxLevel) {
+                            SkipListNode newEl = new SkipListNode(toAdd, i);
+                            head.next[i] = newEl;
+                            newEl.next[i] = currentEl;
+                            added = true;
+
+                            // else if its smaller and we're too high
+                        } else if(toAdd.compareTo((E) currentEl.value) < 0 && i > maxLevel) {
+                            break;
+
+                            // else if its bigger than the current element
+                        } else{
+                            // is it smaller than the next?
+                            if(currentEl.next[i] != null && toAdd.compareTo((E) currentEl.next[i].value) < 0 && i <= maxLevel) {
+                                // If we're on a proper level
+                                    SkipListNode newEl = new SkipListNode(toAdd, i);
+                                    SkipListNode newNext = currentEl.next[i];
+                                    currentEl.next[i] =  newEl;
+                                    newEl.next[i] = newNext;
+                                    added = true;
+                                // else if the spot is correct, but the level is too high
+                            } else if(currentEl.next[i] != null && toAdd.compareTo((E) currentEl.next[i].value) < 0 && i > maxLevel) {
+                                break;
+                                // to next lower level;
+
+                                // else if it is larger than the current Element and the next element
+                            } else if (currentEl.next[i] != null && toAdd.compareTo((E) currentEl.next[i].value) > 0 ){
+                                currentEl = currentEl.next[i];
                                 continue;
+                            } else  if(currentEl.next[i] == null && i <= maxLevel) {
+                                SkipListNode newEl = new SkipListNode(toAdd, i);
+                                currentEl.next[i] = newEl;
+                                added = true;
+                                // Right spot, no next, still to high
+                            } else if (currentEl.next[i] == null && toAdd.compareTo((E) currentEl.value) > 0 && i > maxLevel) {
+                                break;
                             }
 
-                         // if the element is smaller than the head
-                        } else if(toAdd.compareTo((E) first.value) < 0){
-                            SkipListNode newNode = new SkipListNode(toAdd, i);
-                            newNode.next[i] = el;
-                            head.next[i] = newNode;
-                            added = true;
-                            first = newNode;
-                            break;
+
                         }
 
+                        // else if this row is empty and within max level range
+                    } else if(first == null && i <= maxLevel) {
+                        SkipListNode newEl = new SkipListNode(toAdd, i);
+                        head.next[i] = newEl;
+                        added = true;
 
                     }
                 }
+
             }
         }
         size++;
