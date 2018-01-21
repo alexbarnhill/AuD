@@ -211,7 +211,7 @@ public class SkipListPublicTest {
     }
 
     // -------------------- remove [+add+contains] --------------------
-    @Test(timeout = 1666)
+    @Test
     public void pubTest__remove() {
         Set<Integer> reference = new TreeSet<>();
         AbstractSkipList<Integer> sl = new SkipList<>();
@@ -290,7 +290,7 @@ public class SkipListPublicTest {
     }
 
     // -------------------- miscellaneous: getRandomLevel, addAll, clear, containsAll, isEmpty, removeAll --------------------
-    @Test
+    @Test(timeout = 2666)
     public void pubTest__getRandomLevel() {
         AbstractSkipList<?> sl = new SkipList<>();
         int[] distribution = new int[SkipList.MAX_LEVELS];
