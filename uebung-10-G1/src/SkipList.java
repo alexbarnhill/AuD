@@ -1,13 +1,12 @@
 import java.util.Collection;
 
-public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList {
+public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList<E> {
     private int size = 0;
-
 
     @Override
     public int getRandomLevel() {
         int level = 0;
-        while(!super.nextBoolean() && level < super.MAX_LEVELS) {
+        while(!super.nextBoolean() && level < MAX_LEVELS) {
             level++;
         }
 
@@ -21,20 +20,17 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
     @Override
     public boolean isEmpty() {
-        if(head.next[0] == null) {
-            return true;
-        }
+        return head.next[0] == null;
 
-        return false;
     }
 
     @Override
     public boolean contains(Object o) {
         E toFind = (E) o;
-        SkipListNode el = null;
-        SkipListNode prev = null;
+        SkipListNode<E> el = null;
+        SkipListNode<E> prev = null;
         for(int i = MAX_LEVELS - 1; i >= 0; i--) {
-            SkipListNode first = head.next[i];
+            SkipListNode<E> first = head.next[i];
             if(first != null) {
                 // Go through the elements in the row
                 for(int j = 0; j < size; j++) {
@@ -49,15 +45,15 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                     }
 
                     // If the node was found,
-                    if(el != null && toFind.compareTo((E) el.value) == 0 ) {
+                    if(el != null && toFind.compareTo(el.value) == 0 ) {
                         return true;
                         // if the searched-for element is larger than the current value
-                    } else if(el != null && toFind.compareTo((E) el.value) > 0 ) {
+                    } else if(el != null && toFind.compareTo(el.value) > 0 ) {
                         // if the next element exists
-                        if(el.next[i] != null && toFind.compareTo((E) el.next[i].value) >= 0) {
+                        if(el.next[i] != null && toFind.compareTo( el.next[i].value) >= 0) {
                             prev = el;
                             el = el.next[i];
-                            continue;
+
                             // if not, go to the next level;
                         } else {
 
@@ -71,27 +67,23 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                 }
             }
 
-
         }
         return false;
     }
 
 
+
     @Override
-    public boolean add(Object o) {
-        E toAdd = (E) o;
+    public boolean add(E o) {
         if(contains(o)) {
             return false;
         }
 
 
         int maxLevel = getRandomLevel();
-        // First element in this level
-        SkipListNode currentEl = null;
-        SkipListNode previousNode = null;
-        // All Levels
-        SkipListNode newNode = new SkipListNode((E) toAdd, maxLevel);
-        SkipListNode curr = null;
+
+        SkipListNode<E> newNode = new SkipListNode<E>(o, maxLevel);
+        SkipListNode<E> curr = null;
 
 
         // The list is empty
@@ -110,10 +102,10 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                 head.next[level] = newNode;
                 continue;
             }
-            if(head.next[level] != null && toAdd.compareTo((E) head.next[level].value) < 0 && level > maxLevel) { continue;}
+            if(head.next[level] != null && o.compareTo((E) head.next[level].value) < 0 && level > maxLevel) { continue;}
 
             if(curr == null) {curr = head.next[level];}
-            if(head.next[level] != null && toAdd.compareTo((E) head.next[level].value) < 0 && level <= maxLevel) {
+            if(head.next[level] != null && o.compareTo((E) head.next[level].value) < 0 && level <= maxLevel) {
                 head.next[level] = newNode;
                 newNode.next[level] = curr;
                 curr = null;
@@ -122,19 +114,19 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
 
             for(int element = 0; element <= size / 2; element++) {
                 // compare the first element to the element which is to be added;
-                int comparison = toAdd.compareTo((E) curr.value);
+                int comparison = o.compareTo((E) curr.value);
 
                 // if larger
                 if(comparison > 0) {
                     // can skip?
-                    if(curr.next[level] != null && toAdd.compareTo((E) curr.next[level].value) > 0) {
+                    if(curr.next[level] != null && o.compareTo((E) curr.next[level].value) > 0) {
                         curr = curr.next[level];
-                        continue;
+
 
 
 
                         // if cant skip
-                    } else if(curr.next[level] == null || (curr.next[level] != null && toAdd.compareTo((E) curr.next[level].value) < 0)) {
+                    } else if(curr.next[level] == null || (curr.next[level] != null && o.compareTo((E) curr.next[level].value) < 0)) {
                         if(level <= maxLevel) {
                             newNode.next[level] = curr.next[level];
                             curr.next[level] = newNode;
@@ -174,13 +166,9 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
         if(!contains(toRemove)) {
             return false;
         }
-        SkipListNode curr = null;
-        if(toRemove.compareTo((E) new Integer(13518)) == 0) {
-            System.out.println(" Element : 13518 with size = " + size());
-        }
+        SkipListNode<E> curr = null;
         for(int level = MAX_LEVELS - 1; level >= 0; level--) {
             if(head.next[level] == null) {continue;}
-            boolean finished = false;
             for(int element = 0; element <= size / 2; element++) {
                 if(curr == null) {
                     curr = head.next[level];
@@ -196,13 +184,12 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                     // if it's larger
                 } else if(comparison > 0) {
                     // if it is the next element
-                    if(curr.next[level] != null && toRemove.compareTo((E) curr.next[level].value) == 0) {
+                    if(curr.next[level] != null && toRemove.compareTo(curr.next[level].value) == 0) {
                         curr.next[level] = curr.next[level].next[level];
                         removed = true;
                         break;
-                    } else if(curr.next[level] != null && toRemove.compareTo((E) curr.next[level].value) > 0) {
+                    } else if(curr.next[level] != null && toRemove.compareTo(curr.next[level].value) > 0) {
                         curr = curr.next[level];
-                        continue;
                     } else {
                         break;
                     }
@@ -220,30 +207,32 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
     }
 
     @Override
-    public boolean addAll(Collection c) {
-        for(Object o : c) {
-            if(!add(o)) {
-                return false;
-            }
+    public boolean addAll(Collection<? extends E> c) {
+        for(E item : c) {
+            if(!add(item)){return false;}
+
         }
+
         size += c.size();
         return true;
     }
 
     @Override
     public void clear() {
-        for(int i = 0; i < super.MAX_LEVELS; i++) {
+        for(int i = 0; i < MAX_LEVELS; i++) {
             head.next[i] = null;
         }
         size = 0;
     }
 
     @Override
-    public boolean removeAll(Collection c) {
-        for(Object o : c) {
-            if (!remove(0)) {
+    public boolean removeAll(Collection<?> c) {
+        Object[] a = c.toArray();
+        for (Object anA : a) {
+            if (contains(anA) && !remove(anA)) {
                 return false;
             }
+
         }
 
         size -= c.size();
@@ -251,11 +240,14 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
     }
 
     @Override
-    public boolean containsAll(Collection c) {
-        for(Object o : c) {
-            if(!contains(o)) {
+    public boolean containsAll(Collection<?> c) {
+
+        Object[] a = c.toArray();
+        for (Object anA : a) {
+            if (!contains(anA)) {
                 return false;
             }
+
         }
 
         return true;
