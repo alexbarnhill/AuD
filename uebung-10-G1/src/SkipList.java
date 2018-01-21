@@ -104,8 +104,6 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
         }
 
         for(int level = MAX_LEVELS -1; level >= 0; level--) {
-//            int headComp = toAdd.compareTo((E) head.next[level].value);
-
             if(head.next[level] == null && level > maxLevel) {
                 continue;
             } else if (head.next[level] == null && level <= maxLevel) {
@@ -165,7 +163,6 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
             }
         }
 
-
         size++;
         return true;
     }
@@ -173,16 +170,18 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
     @Override
     public boolean remove(Object o) {
         boolean removed = false;
-        int removedEls = 0;
         E toRemove = (E) o;
-        if(contains(o)) {
+        if(!contains(toRemove)) {
             return false;
         }
         SkipListNode curr = null;
+        if(toRemove.compareTo((E) new Integer(13518)) == 0) {
+            System.out.println(" Element : 13518 with size = " + size());
+        }
         for(int level = MAX_LEVELS - 1; level >= 0; level--) {
             if(head.next[level] == null) {continue;}
             boolean finished = false;
-            while(!finished) {
+            for(int element = 0; element <= size / 2; element++) {
                 if(curr == null) {
                     curr = head.next[level];
                 }
@@ -192,15 +191,15 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                 if(comparison == 0 && curr == head.next[level]) {
                     head.next[level] = curr.next[level];
                     removed = true;
-                    removedEls++;
+                    curr = null;
                     break;
                     // if it's larger
                 } else if(comparison > 0) {
                     // if it is the next element
                     if(curr.next[level] != null && toRemove.compareTo((E) curr.next[level].value) == 0) {
                         curr.next[level] = curr.next[level].next[level];
-                        removedEls++;
                         removed = true;
+                        break;
                     } else if(curr.next[level] != null && toRemove.compareTo((E) curr.next[level].value) > 0) {
                         curr = curr.next[level];
                         continue;
@@ -212,11 +211,12 @@ public class SkipList<E extends Comparable<? super E>> extends AbstractSkipList 
                     break;
 
                 }
+
             }
         }
 
         if(removed) {size--;}
-        return true;
+        return removed;
     }
 
     @Override
