@@ -6,3 +6,4 @@ audworkspace
 !*.settings
 .idea/workspace.xml
 **/workspace.xml
+.idea/*
