@@ -7,3 +7,4 @@ audworkspace
 .idea/workspace.xml
 **/workspace.xml
 .idea/*
+.idea/
